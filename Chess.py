@@ -5,7 +5,7 @@ import copy
 
 class Board:
 	      
-  Board = [["wR","wK","wB","wQ","wKK","wB","wK","wR"],["wP","wP","wP","--","wP","wP","--","wP"],["--","--","--","--","--","bB","--","--"],["--","--","--","--","--","--","--","--"],["bR","--","--","--","--","--","--","--"],["--","--","--","--","wK","--","--","wP"],["--","bP","bP","--","--","bP","bP","bP"],["--","bK","bB","bKK","bQ","bB","bK","bP"]]  
+  Board = [["wR","wK","wB","wQ","wKK","wB","wK","wR"],["--","wP","wP","wP","wP","wP","--","wP"],["--","--","--","--","--","bB","--","--"],["--","--","--","--","--","--","--","--"],["bR","--","--","--","--","--","--","--"],["--","bK","--","--","--","--","--","wP"],["--","bP","bP","--","--","bP","bP","bP"],["--","bK","bB","bKK","bQ","bB","bK","bP"]]  
 	 
   BlackKingsPosition = [7,3]
   WhiteKingsPosition = [0,4]
@@ -32,13 +32,38 @@ class Board:
 
   def isValidMove(self,Piece,startLet,endLet,startNum,endNum):
 
+    
+    print("this is Piece")
+    print(Piece)
+
+
+    current = copy.deepcopy(self.Board[startLet][startNum])
+    if(Piece[0]=="b"):
+      KingsPosition = self.BlackKingsPosition
+    if(Piece[0]=="w"):
+      KingsPosition = self.WhiteKingsPosition
+   
+    #print("Kings Posiiton")
+    #print(KingsPosition)
+    #print(self.Check(KingsPosition))
+    if(self.Check(KingsPosition)==False):
+        self.Board[startLet][startNum] = "--"
+        #print(self.Check(KingsPosition))
+        if(self.Check(KingsPosition)==True):
+          self.Board[startLet][startNum] = current
+          print("is vld test")
+          
+          return False
+        else:
+          self.Board[startLet][startNum] = current
+
     # you should make case statments for this if block!duh!
 
     # Pawn Logic
     if(Piece == "bP" or Piece == "wP"):
       
-      # Pawn Logic: -> first move 2 squares
-      if(Piece == "bP" and (endLet == (startLet - 2)) and startNum == endNum):
+      #Black Pawn Logic: -> first move 2 squares
+      if(Piece == "bP" and (endLet == (startLet - 2)) and startNum == endNum and (startLet == 6)):
         # makes sure nothing is in the way of pawn move
 
         
@@ -47,14 +72,47 @@ class Board:
       
         return False
 
-    # Pawn Logic -> any move 1 space up
+      # White pawn logic
+      if(Piece == "wP" and (endLet == (startLet + 2)) and startNum == endNum and (startLet == 1)):
+        # makes sure nothing is in the way of pawn move
+
+        
+        if(self.Board[startLet+1][startNum]=="--" and self.Board[endLet][endNum]=="--"):
+          return True
+      
+        return False
+
+    # Black Pawn Logic -> any move 1 space up
     if(Piece == "bP" and endLet == (startLet-1) and startNum == endNum):
         # makes sure nothing is in way of pawn space
         if(self.Board[endLet][endNum]=="--"):
           return True
 
+
+    # White Pawn Logic -> and move 1 space up
+    if(Piece == "wP" and endLet == (startLet+1) and startNum == endNum):
+      if(self.Board[endLet][endNum]=="--"):
+          return True
+
+    #White Pawn Kill Logic 
+
+    if(Piece == "wP" and (startLet == endLet-1) and (abs(startNum-endNum)==1)):
+      slice = self.Board[endLet][endNum]
+      if(slice[0]=="b"):
+        return True
+
+    #Black Pawn Kill Logic
+    if(Piece == "bP" and (startLet == (endLet+1)) and (abs(startNum-endNum) == 1)):
+      slice = self.Board[endLet][endNum]
+      print("slice")
+      print(slice)
+      if(slice[0]=="w"):
+        return True
+
+
     # Pawn Logic -> En passant
     #not tested
+    # to do En pasant Logic 
 
     if(Piece == "bp" and endLet == (startLet-1)):
       
@@ -76,7 +134,7 @@ class Board:
     # start of rook logic
     # rook logic 
 
-    if(Piece == "bR"):
+    if(Piece[1:] == "R"):
       print("bR testing")
         # handle a capture first then handle a move
       if(self.samePiece(endLet,endNum,Piece)==True):
@@ -155,7 +213,7 @@ class Board:
     # Logic for Black Knight
     # Logic for Black Knight
 
-    if(Piece == "bK"):
+    if(Piece[1:] == "K"):
 
       if(self.samePiece(endLet,endNum,Piece)==True):
         return False
@@ -240,7 +298,7 @@ class Board:
     #Logic for black Bishop
     #Logic for black Bishop
 
-    if(Piece == "bB"):     
+    if(Piece[1:] == "B"):     
       if(self.samePiece(endLet,endNum,Piece)==True):
         return False
 
@@ -254,7 +312,7 @@ class Board:
 
       if(self.OpposingPiece(endLet,endNum,Piece)==False):
 
-        
+        print("Bishop testing")
         # up and to the left diagonally
         if((endLet < startLet) and (startNum > endNum)) :
           for x in range(endLet,startLet,1):
@@ -276,7 +334,7 @@ class Board:
             print(" ")
       
             if(self.Board[x][backWardsEndNum]!='--' ):
-              print("your returning false stupidly dd")
+              print("your returning false stupidly dd4")
               return False
             backWardsEndNum = backWardsEndNum - 1
 
@@ -299,8 +357,8 @@ class Board:
 
         # down and to the right
         if((endLet > startLet) and startNum < endNum):
-          rightWardsEndNum = endNum
-          for x in range(startLet,endLet,1):
+          rightWardsEndNum = startNum+1
+          for x in range(startLet+1,endLet,1):
             print("second for loop zz")
             
             print(x)
@@ -308,9 +366,9 @@ class Board:
             print(rightWardsEndNum)
       
             if(self.Board[x][rightWardsEndNum]!='--' ):
-              print("your returning false stupidly dd")
+              print("your returning false stupidly dd7")
               return False
-            rightWardsEndNum = rightWardsEndNum - 1
+            rightWardsEndNum = rightWardsEndNum + 1
 
           
      
@@ -381,20 +439,18 @@ class Board:
             rightWardsEndNum = rightWardsEndNum - 1
 
           
-     
-       
 
-        # returns true if valid move
-        return True
+          # returns true if valid move
+          return True
 
 
 
-    #Logic for Black Queen
-    #Logic for Black Queen
+    #Logic for Black Queen and White Queen
+    #Logic for Black Queen and White Queen
 
     # this is just a combination of the bishop and Rook logic
 
-    if(Piece == "bQ"):  
+    if(Piece[1:] == "Q"):  
       if(self.samePiece(endLet,endNum,Piece)==True):
         return False
 
@@ -404,100 +460,97 @@ class Board:
       
       if(abs(startLet-endLet) == abs(startNum-endNum)):
         bbb = 3
-      else:
-        return False
+     
 
 
-      if(self.OpposingPiece(endLet,endNum,Piece)==False):
+        if(self.OpposingPiece(endLet,endNum,Piece)==False):
 
         
         # up and to the left diagonally
-        if((endLet < startLet) and (startNum > endNum)) :
-          for x in range(endLet,startLet,1):
-            print("second for loop zz")
-            print(x)
-            print(endNum + x - endLet)
-            print(endNum)
-            if(self.Board[x][endNum+x-endLet]!='--' ):
-              print("your returning false stupidly dd")
-              return False
+          if((endLet < startLet) and (startNum > endNum)) :
+            for x in range(endLet,startLet,1):
+              print("second for loop zz")
+              print(x)
+              print(endNum + x - endLet)
+              print(endNum)
+              if(self.Board[x][endNum+x-endLet]!='--' ):
+                print("your returning false stupidly dd")
+                return False
         
-        # up and to the right diagonally
-        if((endLet < startLet) and (startNum < endNum)) :
-          backWardsEndNum = endNum
-          for x in range(endLet,startLet,1):
-            print(x)
+          # up and to the right diagonally
+          if((endLet < startLet) and (startNum < endNum)) :
+            backWardsEndNum = endNum
+            for x in range(endLet,startLet,1):
+              print(x)
             
-            print(backWardsEndNum)
-            print(" ")
+              print(backWardsEndNum)
+              print(" ")
       
-            if(self.Board[x][backWardsEndNum]!='--' ):
-              print("your returning false stupidly dd")
-              return False
-            backWardsEndNum = backWardsEndNum - 1
+              if(self.Board[x][backWardsEndNum]!='--' ):
+                print("your returning false stupidly dd")
+                return False
+              backWardsEndNum = backWardsEndNum - 1
 
 
-        # this down and to the left
-        if((endLet > startLet) and (startNum > endNum)):
-          DWardsStartNum = endNum + 1
-          for x in range(startLet,endLet,1):
-            print("second for loop zzy")
-            print(x+1)
-            # this is a really shitty solution to this problem
-            print(DWardsStartNum)
-            print(" ")
+          # this down and to the left
+          if((endLet > startLet) and (startNum > endNum)):
+            DWardsStartNum = endNum + 1
+            for x in range(startLet,endLet,1):
+              print("second for loop zzy")
+              print(x+1)
+             # this is a really shitty solution to this problem
+              print(DWardsStartNum)
+              print(" ")
 
-            if(self.Board[x+1][DWardsStartNum]!='--' ):
-              print("your returning false stupidly dd")
-              return False
-            DWardsStartNum = DWardsStartNum - 1
+              if(self.Board[x+1][DWardsStartNum]!='--' ):
+                print("your returning false stupidly dd")
+                return False
+              DWardsStartNum = DWardsStartNum - 1
 
 
         # down and to the right
-        if((endLet > startLet) and startNum < endNum):
-          rightWardsEndNum = endNum
-          for x in range(startLet,endLet,1):
-            print("second for loop zz")
+          if((endLet > startLet) and startNum < endNum):
+            rightWardsEndNum = endNum+1
+            for x in range(startLet+1,endLet,1):
+              print("second for loop zz")
             
-            print(x)
+              print(x)
             # this is a really shitty solution to this problem
-            print(rightWardsEndNum)
+              print(rightWardsEndNum)
       
-            if(self.Board[x][rightWardsEndNum]!='--' ):
-              print("your returning false stupidly dd")
-              return False
-            rightWardsEndNum = rightWardsEndNum - 1
+              if(self.Board[x][rightWardsEndNum]!='--' ):
+                print("your returning false stupidly ddQ7")
+                return False
+              rightWardsEndNum = rightWardsEndNum + 1
 
           
-     
-       
-
-        # returns true if valid move
-        return True
+            # returns true if valid move
+            # watch out for the tab
+          return True
 
       
-      if(self.OpposingPiece(endLet,endNum,Piece)==True):
+        if(self.OpposingPiece(endLet,endNum,Piece)==True):
 
-        OpposingPiece = self.Board[endLet][endNum]
+          OpposingPiece = self.Board[endLet][endNum]
         
-        if((endLet < startLet) and (startNum > endNum)) :
-          for x in range(endLet,startLet,1):
-            print("second for loop zz")
-            print(x)
-            print(endNum + x - endLet)
-            print(endNum)
-            if(self.Board[x][endNum+x-endLet]!='--' and self.Board[x][endNum+x-endLet]!=OpposingPiece):
-              print("your returning false stupidly dd1")
-              return False
+          if((endLet < startLet) and (startNum > endNum)):
+            for x in range(endLet,startLet,1):
+              print("second for loop zz")
+              print(x)
+              print(endNum + x - endLet)
+              print(endNum)
+              if(self.Board[x][endNum+x-endLet]!='--' and self.Board[x][endNum+x-endLet]!=OpposingPiece):
+                print("your returning false stupidly dd1")
+                return False
         
         # up and to the right diagonally
-        if((endLet < startLet) and (startNum < endNum)) :
-          backWardsEndNum = endNum
-          for x in range(endLet,startLet,1):
-            print(x)
+          if((endLet < startLet) and (startNum < endNum)):
+            backWardsEndNum = endNum
+            for x in range(endLet,startLet,1):
+              print(x)
             
-            print(backWardsEndNum)
-            print(" ")
+              print(backWardsEndNum)
+              print(" ")
       
             if(self.Board[x][backWardsEndNum]!='--' and self.Board[x][backWardsEndNum]!=OpposingPiece ):
               print("your returning false stupidly dd2")
@@ -506,79 +559,82 @@ class Board:
 
 
         # this down and to the left
-        if((endLet > startLet) and (startNum > endNum)):
-          DWardsStartNum = endNum + 1
-          for x in range(startLet,endLet,1):
-            print("second for loop zzy")
-            print(x+1)
-            # this is a really shitty solution to this problem
-            print(DWardsStartNum)
-            print(" ")
+          if((endLet > startLet) and (startNum > endNum)):
+            DWardsStartNum = endNum + 1
+            for x in range(startLet,endLet,1):
+              print("second for loop zzy")
+              print(x+1)
+              # this is a really shitty solution to this problem
+              print(DWardsStartNum)
+              print(" ")
 
-            if(self.Board[x+1][DWardsStartNum]!='--'and self.Board[x+1][DWardsStartNum]!=OpposingPiece ):
-              print("your returning false stupidly dd3")
-              return False
-            DWardsStartNum = DWardsStartNum - 1
+              if(self.Board[x+1][DWardsStartNum]!='--'and self.Board[x+1][DWardsStartNum]!=OpposingPiece ):
+                print("your returning false stupidly dd3")
+                return False
+              DWardsStartNum = DWardsStartNum - 1
 
 
         # down and to the right
-        if((endLet > startLet) and startNum < endNum):
-          rightWardsEndNum = endNum
-          for x in range(startLet,endLet,1):
-            print("second for loop zz")
+          if((endLet > startLet) and startNum < endNum):
+            rightWardsEndNum = endNum
+            for x in range(startLet,endLet,1):
+              print("second for loop zz")
             
-            print(x)
+              print(x)
             # this is a really shitty solution to this problem
-            print(rightWardsEndNum)
-      
-            if(self.Board[x][rightWardsEndNum]!='--' and self.Board[x][rightWardsEndNum]!=OpposingPiece):
-              print("your returning false stupidly dd4")
-              return False
-            rightWardsEndNum = rightWardsEndNum - 1
+              print(rightWardsEndNum)
 
-          
-     
+              if(self.Board[x][rightWardsEndNum]!='--' and self.Board[x][rightWardsEndNum]!=OpposingPiece):
+                print("your returning false stupidly dd4")
+                return False
+              rightWardsEndNum = rightWardsEndNum - 1
        
 
-        # returns true if valid move
-        return True
+            # returns true if valid move
+          return True
 
 
       #rook logic has to be below bishop logic
       # bishop logic checks for diagonality first
       # then sees if its a valid move
 
-      if(self.OpposingPiece(endLet,endNum,Piece)==True):
+     
+      if((startLet == endLet) or (startNum == endNum)):
+        
+    
+
+        if(self.OpposingPiece(endLet,endNum,Piece)==True):
           # 
-        if((startLet == endLet) or (startNum == endNum)):
-          bbb = 2
-        else:
-          return False
+         
 
-        print("Primary Rook Check")
-          # checks if move is valid up to capture square
-        for x in range(startLet,endLet-1):
-          if(self.Board[startLet+x][endNum]!="--" ):
-            return False
+          print("Primary Rook Check")
+            # checks if move is valid up to capture square
+          for x in range(startLet,endLet-1):
+            if(self.Board[startLet+x][endNum]!="--" ):
+              return False
 
-        for x in range(startNum,endNum-1):
-          if(self.Board[startLet][startNum+x]!="--"):
-            return False
+          for x in range(startNum,endNum-1):
+            if(self.Board[startLet][startNum+x]!="--"):
+              return False
           
-          # returns true if possible capture 
-        return True
+            # returns true if possible capture 
+          return True
 
-      if(self.OpposingPiece(endLet,endNum,Piece)==False):
-      
-        print("secondary rook check")
-      
-        if((startLet == endLet) or (startNum == endNum)):
-          bbb=2
-        else:
-          return False
-  
+        if(self.OpposingPiece(endLet,endNum,Piece)==False):
+         
+          if(self.samePiece(endLet,endNum,Piece)==True):
+            return False
 
-        # up direction: start let end let
+          print("secondary rook check")
+      
+      
+
+         # up direction: start let end let
+          # down direction: end let start let 
+          # this allows us to flip the ranges to reduce code
+          # 
+          
+           # up direction: start let end let
         # down direction: end let start let 
         # this allows us to flip the ranges to reduce code
         # 
@@ -614,16 +670,20 @@ class Board:
           if(self.Board[startLet][endNum-m]!="--"):
             print("your returning false stupidly 2")
             return False
-      
-      # end of Queen logic 
+
+          
+        
+        return True
+        # end of Queen logic 
+      return False  
 
 
-      # start of king logic 
+    # start of king logic 
 
     # you need to handle if the king places it self into 
     # check or check mate once it moves into a location. 
 
-    if(Piece == "bKK"):
+    if(Piece[1:] == "KK"):
 
       if(abs(startLet-endLet)!=1 or abs(startNum-endNum)!=1):
         return False
@@ -660,7 +720,7 @@ class Board:
 
   def OpposingPiece(self,endLet,endNum,Piece):
     
-    print("Opposing Piece testing")
+    #print("Opposing Piece testing")
 
     EndLocPiece = self.Board[endLet][endNum]
 
@@ -671,7 +731,7 @@ class Board:
 
 
   def samePiece(self,endLet,endNum,Piece):
-    print("same piece Testing")
+    #print("same piece Testing")
 
     EndLocPiece = self.Board[endLet][endNum]
 
@@ -684,40 +744,81 @@ class Board:
  
   def move(self,startLet,startNum,endLet,endNum):
     
+      KingsPositionT = []
+      ComparePieceString = self.Board[startLet][startNum] 
+      if(ComparePieceString[0]=="b"):
+        KingsPositionT = self.BlackKingsPosition
+      if(ComparePieceString[0]=="w"):
+        KingsPositionT = self.WhiteKingsPosition
 
       # handle checkmate and move blocking
-      print(self.BlackKingsPosition)
+      #print("self.KingsPositionT positon ")
+      #print(KingsPositionT)
       if(self.AvailableMoves=="RestrictedMoves"):
-        
-        if(self.BlackKingsPosition[0]==startLet and self.BlackKingsPosition[1]==startNum):
+        print("Restricted moves")
+        if(KingsPositionT[0]==startLet and KingsPositionT[1]==startNum):
           b = 5
+         
           self.AvailableMoves="Empty"
-        else:
-          return False
+        
+          
 
         
         ## move must be correct
         ## else return false
 
       Piece = self.Board[startLet][startNum]
-      print("move test")
-      print(" ")
+      #print("move test")
+      #print(" ")
     
       if(self.isValidMove(Piece,startLet,endLet,startNum,endNum)):
     
-        
 
-        print("valid move")
+        #print("call to is valid move")
+        #print(self.Check(KingsPositionT))
+        previous = copy.deepcopy(self.Board[endLet][endNum])
+        #print("prvious")
+        #print(previous)
+        self.Board[endLet][endNum] = "$$"
+        
+        # handles to see if a peice can block check
+        # if there are two peices, checkmate 
+        # will pick this up, and retunr game over
+        # before move -> is valid move is called again
+        if(self.Check(KingsPositionT)==True):
+          print("upper check block ")
+          self.Board[endLet][endNum] = previous
+          return False
+        
+        # resets temp Money peice
+        self.Board[endLet][endNum] = previous
+        
+        # tests to see if peice movings puts king back in check
+        # regular check, might not pick up on this
+        # becuase it could kill one attacking peice but then
+        # place king back in check, so it has to test
+        # here as well
+        
+        
+          
+       
+        #print("below second check move test")
+
+
+        # now that we know this is a valid move
+        # do the move 
+        
+        #print("valid move")
         self.Board[startLet][startNum] = "--"
         self.Board[endLet][endNum] = Piece
 
         if(Piece == "bKK"):
-          BlackKingsPosition = [endLet,endNum]
-          print(BlackKingsPosition)
+          self.BlackKingsPosition = [endLet,endNum]
+          print(self.BlackKingsPosition)
 
         if(Piece == "wKK"):
-          WhiteKingsPosition = [endLet,endNum]
-          print(BlackKingsPosition)
+          self.WhiteKingsPosition = [endLet,endNum]
+          print(self.WhiteKingsPosition)
 
     
         self.AvailableMoves=="Empty"
@@ -786,7 +887,7 @@ class Board:
       bbb = 3
     # might need to switch the 7 to an 8 so that its inclusive
 
-    print("checking check")
+    #print("checking check")
 
     # searches for rook or queen to the left of king
     for x in range(0,KingsPiece[1],-1):
@@ -794,7 +895,7 @@ class Board:
         if(self.Board[KingsPiece[0]][x]=="wQ" or self.Board[KingsPiece[0]][x]=="wR"):
           return True
         else:
-          return False  
+          break  
 
 
     # searches for rook or queen to the right of king
@@ -803,7 +904,7 @@ class Board:
         if(self.Board[KingsPiece[1]][x]=="wQ" or self.Board[KingsPiece[1]][x]=="wR"):
           return True
         else:
-          return False 
+          break
 
 
     # searches for rook or Queen in up position 
@@ -812,9 +913,10 @@ class Board:
     for x in range(1,KingsPiece[0]+1,1):  
       if(self.Board[KingsPiece[0]-x][KingsPiece[1]]!="--"):
         if(self.Board[KingsPiece[0]-x][KingsPiece[1]]=="wQ" or self.Board[KingsPiece[0]-x][KingsPiece[1]]=="wR"):
+        
           return True
         else:
-          return False 
+          break 
 
     # searches for rook or Queen in the down positon
     for x in range(KingsPiece[0],7,1):
@@ -822,18 +924,23 @@ class Board:
         if(self.Board[x][KingsPiece[1]]=="wQ" or self.Board[x][KingsPiece[1]]=="wR"):
           return True
         else:
-          return False 
+          break 
 
     # handles Bishop or Queen Checks 
 
     # handle Bishop up and to the left
 
     for x in range(1,KingsPiece[0],1):
-      if(self.Board[KingsPiece[0]-x][KingsPiece[1]-x]!="--"):
-        if(self.Board[KingsPiece[0]-x][KingsPiece[1]-x]=="wQ" or self.Board[KingsPiece[0]-x][KingsPiece[1]-x]=="wB"):
-          return True
-        #else:
-          #return False 
+      try:
+        if(self.Board[KingsPiece[0]-x][KingsPiece[1]-x]!="--"):
+          if(self.Board[KingsPiece[0]-x][KingsPiece[1]-x]=="wQ" or self.Board[KingsPiece[0]-x][KingsPiece[1]-x]=="wB"):
+          
+            return True
+          else:
+            break
+      except:
+        break
+             
 
     # handles Bishop up and to the right
 
@@ -845,8 +952,11 @@ class Board:
         if(self.Board[KingsPiece[0]-x][KingsPiece[1]+x]!="--"):
           if(self.Board[KingsPiece[0]-x][KingsPiece[1]+x]=="wQ" or self.Board[KingsPiece[0]-x][KingsPiece[1]+x]=="wB"):
             return True
-      except: 
-        b = 3 
+          else:
+            break
+      except:
+        break 
+       
         #else:
          # return False 
 
@@ -858,8 +968,10 @@ class Board:
         if(self.Board[KingsPiece[0]+x][KingsPiece[1]+x]!="--"):
           if(self.Board[KingsPiece[0]+x][KingsPiece[1]+x]=="wQ" or self.Board[KingsPiece[0]+x][KingsPiece[1]+x]=="wB"):
             return True
+          else:
+            break
       except:
-        b = 3
+        break
 
     # handles Bishot down and to the Left
 
@@ -869,8 +981,10 @@ class Board:
         if(self.Board[KingsPiece[0]+x][KingsPiece[1]-x]!="--"):
           if(self.Board[KingsPiece[0]+x][KingsPiece[1]-x]=="wQ" or self.Board[KingsPiece[0]+x][KingsPiece[1]-x]=="wB"):
             return True
+          else:
+            break
       except:
-        b = 3
+        break
     
     # I don't think we need this return False statement
 
@@ -1061,8 +1175,8 @@ class Board:
 
     tempKingsPieceR[1] = tempKingsPieceR[1]+1
     tempKingsPieceL[1] = tempKingsPieceL[1]-1
-    tempKingsPieceU[0] = tempKingsPieceU[0]+1
-    tempKingsPieceD[0] = tempKingsPieceD[0]-1
+    tempKingsPieceU[0] = tempKingsPieceU[0]-1
+    tempKingsPieceD[0] = tempKingsPieceD[0]+1
 
     ## you need to get rid of the Returns they will not continue 
     ## the rest of the program
@@ -1076,6 +1190,7 @@ class Board:
       #return True
 
     if(self.Check(tempKingsPieceU)):
+     
       PCSafeSpace[1] = 1
       #return True
 
@@ -1140,11 +1255,16 @@ class Board:
 
     # check surrounding available locations to move to
 
-    for x in range(len(PCSafeSpace)):
-      if(PCSafeSpace[x]==0):
+    # this is just spaghetti code right here
+    if(sum(PCSafeSpace)==8):
+      self.AvailableMoves = "RestrictedMoves"
+    else:
+      for x in range(len(PCSafeSpace)):
+        if(PCSafeSpace[x]==0):
 
-        AvailableKingMoves = PCSafeSpace
-        self.AvailableMoves = "RestrictedMoves"
+          AvailableKingMoves = PCSafeSpace
+          print("Restricted moves")
+          self.AvailableMoves = "RestrictedMoves"
         # must handle King moving out or avoiding check
         # i elected to build a global array
         # this is dumb, and can anyone propose a solution
@@ -1152,7 +1272,9 @@ class Board:
         # pretty much move is waiting for any move after this returns
         # and it needs to allow the king to only move in a specific location
         # it also has to check to see if blocking a move is ok
-        break
+        
+        #TODO: Handle what ever this is 
+          break
 
 
         #return False
@@ -1164,14 +1286,17 @@ class Board:
     #with check makte
     #Jake You stopped here 
     
-    if(self.AvoidMate(KingsPiece)==True):
+    if(self.AvoidMate(KingsPiece)==False):
       print("inside avoid mate")
       b = 3
 
       if(sum(PCSafeSpace)==8 ):
         # commented out for teams meeting
         b = 3
+        print("returning true")
         return True
+      #else:
+        #return False
     
     # if after move checks, king is in check
     # and has no place to move, declare checkmate
@@ -1186,11 +1311,36 @@ class Board:
   def AvoidMate(self,KingsPiece):
 
     ColorOfKing = self.Board[KingsPiece[0]][KingsPiece[1]]
+    OppPeices = {}
+    KK = ""
+    Q = ""
+    R = ""
+    K = ""
+    B = ""
+    P = ""
 
-    if(KingsPiece[0]=="w"):
+    # also sets comparator peices 
+    if(ColorOfKing[0]=="w"):
       self.WhiteOppPeicesCausingCheck = []
-    else:
+      OppPeices = self.WhiteOppPeicesCausingCheck
+      KK = "bKK"
+      Q = "bQ"
+      R = "bR"
+      K = "bK"
+      B = "bB"
+      P = "bP"
+    print(ColorOfKing[0])
+    if(ColorOfKing[0]=="b"):
       self.BlackOppPeicesCausingCheck = []
+      OppPeices = self.BlackOppPeicesCausingCheck
+      KK = "wKK"
+      Q = "wQ"
+      R = "wR"
+      K = "wK"
+      B = "wB"
+      P = "wP"
+    
+
 
     # This is just a rehash of the check function but it checks 
     # for all checks on the kings position
@@ -1208,78 +1358,93 @@ class Board:
     # 
 
     try:
-      if(self.Board[KingsPiece[0]+2][KingsPiece[1]-1]=="wK"):
-        self.BlackOppPeicesCausingCheck.append([KingsPiece[0]+2,KingsPiece[1]-1])
+      slice = self.Board[KingsPiece[0]+2][KingsPiece[1]-1]
+      if(slice==K):
+        OppPeices.append([KingsPiece[0]+2,KingsPiece[1]-1])
         
     except:
       bbb = 3
 
     try:
-      if(self.Board[KingsPiece[0]+2][KingsPiece[1]+1]=="wK"):
-        self.BlackOppPeicesCausingCheck.append([KingsPiece[0]+2,KingsPiece[1]+1])
+      slice = self.Board[KingsPiece[0]+2][KingsPiece[1]+1]
+      if(slice==K):
+        OppPeices.append([KingsPiece[0]+2,KingsPiece[1]+1])
     except:
       bbb = 3
 
 
     try:
-      if(self.Board[KingsPiece[0]+1][KingsPiece[1]+2]=="wK"):
-        self.BlackOppPeicesCausingCheck.append([KingsPiece[0]+1,KingsPiece[1]+2])
+      slice = self.Board[KingsPiece[0]+1][KingsPiece[1]+2]
+      if(slice==K):
+        OppPeices.append([KingsPiece[0]+1,KingsPiece[1]+2])
         
     except:
       bbb = 3
 
     try:
-      if(self.Board[KingsPiece[0]+1][KingsPiece[1]-2]=="wK"):
-        self.BlackOppPeicesCausingCheck.append([KingsPiece[0]+1,KingsPiece[1]-2])
+      slice = self.Board[KingsPiece[0]+1][KingsPiece[1]-2]
+      if(slice==K):
+        OppPeices.append([KingsPiece[0]+1,KingsPiece[1]-2])
     except:
       bbb = 3
 
     try:  
-      if(self.Board[KingsPiece[0]-2][KingsPiece[1]-1]=="wK"):
-        self.BlackOppPeicesCausingCheck.append([KingsPiece[0]-2,KingsPiece[1]-1])
+
+      slice = self.Board[KingsPiece[0]-2][KingsPiece[1]-1]
+      if(slice==K):
+        OppPeices.append([KingsPiece[0]-2,KingsPiece[1]-1])
     except:
       bbb = 3
 
     try:  
-      if(self.Board[KingsPiece[0]-2][KingsPiece[1]+1]=="wK"):
-        self.BlackOppPeicesCausingCheck.append([KingsPiece[0]-2,KingsPiece[1]+1])
+      slice = self.Board[KingsPiece[0]-2][KingsPiece[1]+1]
+      if(slice==K):
+        OppPeices.append([KingsPiece[0]-2,KingsPiece[1]+1])
     except:
       bbb = 3
 
     try:  
-      if(self.Board[KingsPiece[0]-1][KingsPiece[1]+2]=="wK"):
-        self.BlackOppPeicesCausingCheck.append([KingsPiece[0]-1,KingsPiece[1]+2])
+
+      slice = self.Board[KingsPiece[0]-1][KingsPiece[1]+2]
+      if(slice==K):
+        OppPeices.append([KingsPiece[0]-1,KingsPiece[1]+2])
     except:
       bbb = 3
 
     try:  
-      if(self.Board[KingsPiece[0]-1][KingsPiece[1]-2]=="wK"):
-        self.BlackOppPeicesCausingCheck.append([KingsPiece[0]-1,KingsPiece[1]-2])
+      slice = self.Board[KingsPiece[0]-1][KingsPiece[1]-2]
+      if(slice==K):
+        OppPeices.append([KingsPiece[0]-1,KingsPiece[1]-2])
     except: 
       bbb = 3
     # might need to switch the 7 to an 8 so that its inclusive
 
-    print("checking check")
+    #print("checking check")
 
 
 
     # searches for rook or queen to the left of king
     for x in range(0,KingsPiece[1],-1):
       if(self.Board[KingsPiece[0]][x]!="--"):
-        if(self.Board[KingsPiece[0]][x]=="wQ"):
-          self.BlackOppPeicesCausingCheck.append(KingsPiece[0],x)
-        if(self.Board[KingsPiece[0]][x]=="wR"):
-          self.BlackOppPeicesCausingCheck.append(KingsPiece[0],x)
+
+        slice = self.Board[KingsPiece[0]][x]
+        if(slice==Q):
+          OppPeices.append([KingsPiece[0],x])
+          
+        elif(slice==R):
+          OppPeices.append([KingsPiece[0],x])
         break
 
     # searches for rook or queen to the right of king
     for x in range(KingsPiece[1],7,1):
       if(self.Board[KingsPiece[1]][x]!="--"):
-        if(self.Board[KingsPiece[1]][x]=="wQ"):
-          self.BlackOppPeicesCausingCheck.append(KingsPiece[1],x)
-        
-        if(self.Board[KingsPiece[1]][x]=="wR"):
-          self.BlackOppPeicesCausingCheck.append(KingsPiece[1],x)
+
+        slice = self.Board[KingsPiece[1]][x]
+        if(slice==Q):
+          OppPeices.append([KingsPiece[1],x])
+          
+        elif(slice==R):
+          OppPeices.append([KingsPiece[1],x])
         #else:
           #return False 
         break
@@ -1290,11 +1455,15 @@ class Board:
 
     for x in range(1,KingsPiece[0]+1,1):  
       if(self.Board[KingsPiece[0]-x][KingsPiece[1]]!="--"):
-        if(self.Board[KingsPiece[0]-x][KingsPiece[1]]=="wQ"): 
-          self.BlackOppPeicesCausingCheck.append([KingsPiece[0]-x,KingsPiece[1]])
+
+        slice = self.Board[KingsPiece[0]-x][KingsPiece[1]]
         
-        if(self.Board[KingsPiece[0]-x][KingsPiece[1]]=="wR"):
-          self.BlackOppPeicesCausingCheck.append(KingsPiece[0]-x,KingsPiece[1])
+        if(slice==Q): 
+          print("append queen")
+          OppPeices.append([KingsPiece[0]-x,KingsPiece[1]])
+        
+        elif(slice==R):
+          OppPeices.append([KingsPiece[0]-x,KingsPiece[1]])
         #else:
           #return False 
         break
@@ -1304,10 +1473,12 @@ class Board:
     # searches for rook or Queen in the down positon
     for x in range(KingsPiece[0],7,1):
       if(self.Board[x][KingsPiece[1]]!="--"):
-        if(self.Board[x][KingsPiece[1]]=="wQ"): 
-          self.BlackOppPeicesCausingCheck.append(x,KingsPiece[1])
-        if(self.Board[x][KingsPiece[1]]=="wR"):
-          self.BlackOppPeicesCausingCheck.append(x,KingsPiece[1])
+        slice = self.Board[x][KingsPiece[1]]
+        if(slice==Q): 
+          OppPeices.append([x,KingsPiece[1]])
+        elif(slice==R):
+          print("goof")
+          OppPeices.append([x,KingsPiece[1]])
         break
     # handles Bishop or Queen Checks 
 
@@ -1315,10 +1486,12 @@ class Board:
 
     for x in range(1,KingsPiece[0],1):
       if(self.Board[KingsPiece[0]-x][KingsPiece[1]-x]!="--"):
-        if(self.Board[KingsPiece[0]-x][KingsPiece[1]-x]=="wQ"): 
-          self.BlackOppPeicesCausingCheck.append(KingsPiece[0]-x,KingsPiece[1]-x)
-        if(self.Board[KingsPiece[0]-x][KingsPiece[1]-x]=="wB"):
-          self.BlackOppPeicesCausingCheck.append(KingsPiece[0]-x,KingsPiece[1]-x)
+
+        slice = self.Board[KingsPiece[0]-x][KingsPiece[1]-x]
+        if(slice==Q): 
+          OppPeices.append([KingsPiece[0]-x,KingsPiece[1]-x])
+        elif(slice==B):
+          OppPeices.append([KingsPiece[0]-x,KingsPiece[1]-x])
         break   
         #else:
           #return False 
@@ -1331,10 +1504,12 @@ class Board:
     for x in range(1,KingsPiece[0],1):
       try:
         if(self.Board[KingsPiece[0]-x][KingsPiece[1]+x]!="--"):
-          if(self.Board[KingsPiece[0]-x][KingsPiece[1]+x]=="wQ"): 
-            self.BlackOppPeicesCausingCheck.append(KingsPiece[0]-x,KingsPiece[1]+x)
-          if(self.Board[KingsPiece[0]-x][KingsPiece[1]+x]=="wB"):
-            self.BlackOppPeicesCausingCheck.append(KingsPiece[0]-x,KingsPiece[1]+x)
+
+          slice = self.Board[KingsPiece[0]-x][KingsPiece[1]+x]
+          if(slice==Q): 
+            OppPeices.append([KingsPiece[0]-x,KingsPiece[1]+x])
+          elif(slice==B):
+            OppPeices.append([KingsPiece[0]-x,KingsPiece[1]+x])
           break
 
       except: 
@@ -1348,25 +1523,29 @@ class Board:
 
       try:
         if(self.Board[KingsPiece[0]+x][KingsPiece[1]+x]!="--"):
-          if(self.Board[KingsPiece[0]+x][KingsPiece[1]+x]=="wQ"): 
-            self.BlackOppPeicesCausingCheck.append(KingsPiece[0]+x,KingsPiece[1]+x)
-          if(self.Board[KingsPiece[0]+x][KingsPiece[1]+x]=="wB"):
-            self.BlackOppPeicesCausingCheck.append(KingsPiece[0]+x,KingsPiece[1]+x)
+          
+          slice = self.Board[KingsPiece[0]+x][KingsPiece[1]+x] 
+          if(slice==Q): 
+            OppPeices.append([KingsPiece[0]+x,KingsPiece[1]+x])
+          elif(slice==B):
+            OppPeices.append([KingsPiece[0]+x,KingsPiece[1]+x])
           break
       except:
         b = 3
 
-    # handles Bishot down and to the Left
+    # handles Bishop down and to the Left
 
     for x in range(KingsPiece[0],7,1):
 
       try:
         if(self.Board[KingsPiece[0]+x][KingsPiece[1]-x]!="--"):
-          if(self.Board[KingsPiece[0]+x][KingsPiece[1]-x]=="wQ"): 
-            self.BlackOppPeicesCausingCheck.append(KingsPiece[0]+x,KingsPiece[1]-x)
+
+          slice = self.Board[KingsPiece[0]+x][KingsPiece[1]-x]
+          if(slice==Q): 
+            OppPeices.append([KingsPiece[0]+x,KingsPiece[1]-x])
           
-          if(self.Board[KingsPiece[0]+x][KingsPiece[1]-x]=="wB"):
-            self.BlackOppPeicesCausingCheck.append(KingsPiece[0]+x,KingsPiece[1]-x)
+          elif(slice==B):
+            OppPeices.append([KingsPiece[0]+x,KingsPiece[1]-x])
           break
       except:
         b = 3
@@ -1375,19 +1554,68 @@ class Board:
     #self.BlackOppPeicesCausingCheck = []
     # there are no ways to block check, return the game is over
     
-    if(len(self.BlackOppPeicesCausingCheck)==0):
-      print("none")
+    if(len(OppPeices)>=2):
+      print("Can't block 2+ peices")
+      print(OppPeices)
       return False
 
-    print("BlackOppPeice")
-    print(self.BlackOppPeicesCausingCheck)
+    print("OppPeices")
+    print(OppPeices)
+    print(KingsPiece[0])
+
+    if(len(OppPeices)==1):
+      TestPeice = OppPeices[0]
+      print(TestPeice)
+    # if you cant block the check return false
+    # this signifys a check mate and the game ends
+     # if(self.BlockCheck(TestPeice)==False):
+      b = 3
+
+        #return False
    
     
     return True    
 
+  def BlockCheck(self,TestPeice):
+
+    OppPeiceString = self.Board[TestPeice[0]][TestPeice[1]]
+    OppPeiceColor = OppPeiceString[0]
+    print("this is opp peice Color")
+    print(OppPeiceColor)
+    OppPeiceType = OppPeiceString[1:]
+    print(OppPeiceType)
+
+    if(OppPeiceType == "K"):
+      if(self.Check(TestPeice)==True):
+        return True
+      else: 
+        return False
+    
+    if(OppPeiceType == "R"):
+      #for()
+
+      
+      return
+
+    if(OppPeiceType == "B"):
+      return 
+
+    if(OppPeiceType == "Q"):
+      return
+
+    if(OppPeiceType == "P"):
+      return
+
+    if(OppPeiceType == "KK"):
+      return
+
+    return False
 	
 def main():
 	 
+    # set to one for testing 
+    # reset back to 0 for white to go first
+    MoveCounter = 0;
     CheckMate = False 
     Chess = Board()
 
@@ -1396,8 +1624,12 @@ def main():
       print(" ")
       Chess.printBoard()
       print(" ")
+      #if(MoveCounter%2==0):
+       # CheckMate = Chess.CheckMate(Chess.WhiteKingsPosition)
+      #elif(MoveCounter%2==1):
       CheckMate = Chess.CheckMate(Chess.BlackKingsPosition)
-      print(CheckMate)
+      
+      #print(CheckMate)
       if(CheckMate == True):
         print("Check Make you lose")
 
@@ -1406,17 +1638,30 @@ def main():
         # RL can play over and over again
         break
 
+      # Move counter is not WORKING if a peice puts a king in check
+
       try:
         userStartLet = int(input("enter start Let (vertical column): "))
         userStartNum  = int(input("enter start num (horizontal column): "))
         userEndLet  = int(input("enter end Let (vertical column: "))
         userEndNum  = int(input("enter end Num (horizontal column): "))
 
+        SelectedPiece = Chess.Board[userStartLet][userStartNum]
+        #if(MoveCounter%2==0 and SelectedPiece[0]=="b"):
+          #MoveCounter = MoveCounter - 1
+          #raise Exception("cant move that piece")
+        #if(MoveCounter%2==1 and SelectedPiece[0]=="w"):
+          #MoveCounter = MoveCounter -1
+          #raise Exception("can't move that peice")
       
         Chess.move(userStartLet,userStartNum,userEndLet,userEndNum)
+        
       except:
+        MoveCounter = MoveCounter - 1
         print("Make a valid move")
+      
 
+      MoveCounter = MoveCounter + 1
+      print(MoveCounter)
 
-   
 main()  
