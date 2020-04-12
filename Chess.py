@@ -1946,7 +1946,8 @@ def main():
             newSN = random.randint(0, 7)
             newEL = random.randint(0, 7)
             newEN = random.randint(0, 7)
-            x = Chess.move(newSL, newSN, newEL, newEN)
+            if Chess.Board[newSL][newSN][0] != 'b':
+                x = Chess.move(newSL, newSN, newEL, newEN)
         print("White moved ", "'", Chess.Board[newEL][newEN], "'" , " from [",newSL, ',', newSN, "] to [", newEL, ',', newEN,"]", sep="")
 
 
