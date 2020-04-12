@@ -1,4 +1,6 @@
 import copy
+import random
+import time as t
 
 # used to feed moves if king has to move out of check
 
@@ -42,6 +44,9 @@ class Board:
       KingsPosition = self.BlackKingsPosition
     if(Piece[0]=="w"):
       KingsPosition = self.WhiteKingsPosition
+
+    if Piece == "--":
+        return False
    
     #print("Kings Posiiton")
     #print(KingsPosition)
@@ -53,7 +58,7 @@ class Board:
         if(self.Check(KingsPosition)==True):
           self.Board[startLet][startNum] = current
           print("is vld test")
-          MoveCounter = MoveCounter - 1
+          # MoveCounter = MoveCounter - 1
           
           return False
         else:
@@ -1928,35 +1933,51 @@ def main():
         break
       if(MoveCounter%2==0):
         print("Whites turn to move")
-      elif(MoveCounter%2==1):
-        print("Blacks turn to move")
+        print("White is thinking pretty hard")
+        t.sleep(3)
 
+        newSL = random.randint(0, 7)
+        newSN = random.randint(0, 7)
+        newEL = random.randint(0, 7)
+        newEN = random.randint(0, 7)
+        x = Chess.move(newSL, newSN, newEL, newEN)
+        while not x:
+            newSL = random.randint(0, 7)
+            newSN = random.randint(0, 7)
+            newEL = random.randint(0, 7)
+            newEN = random.randint(0, 7)
+            x = Chess.move(newSL, newSN, newEL, newEN)
+
+
+      elif(MoveCounter%2==1):
+
+          print("Blacks turn to move")
       # Move counter is not WORKING if a peice puts a king in check
      # print("upper move counter")
-      print(MoveCounter)
-      try:
-        userStartLet = int(input("enter start Let (vertical column): "))
-        userStartNum  = int(input("enter start num (horizontal column): "))
-        userEndLet  = int(input("enter end Let (vertical column: "))
-        userEndNum  = int(input("enter end Num (horizontal column): "))
+          print(MoveCounter)
+          try:
+            userStartLet = int(input("enter start Let (vertical column): "))
+            userStartNum  = int(input("enter start num (horizontal column): "))
+            userEndLet  = int(input("enter end Let (vertical column: "))
+            userEndNum  = int(input("enter end Num (horizontal column): "))
 
-        SelectedPiece = Chess.Board[userStartLet][userStartNum]
-        if(MoveCounter%2==0 and SelectedPiece[0]=="b"):
-          # move counter decrament is probably causing a problem here
-          #MoveCounter = MoveCounter - 1
-          raise Exception("cant move that piece")
-        if(MoveCounter%2==1 and SelectedPiece[0]=="w"):
-          # move counter decrament is probabably 
-          # causing a problem here
-          #MoveCounter = MoveCounter -1
-          raise Exception("can't move that peice")
-      
-        Chess.move(userStartLet,userStartNum,userEndLet,userEndNum)
-        
-      except:
-        MoveCounter = MoveCounter - 1
-        print("Make a valid move")
-      
+            SelectedPiece = Chess.Board[userStartLet][userStartNum]
+            if(MoveCounter%2==0 and SelectedPiece[0]=="b"):
+              # move counter decrament is probably causing a problem here
+              MoveCounter = MoveCounter - 1
+              raise Exception("cant move that piece")
+            if(MoveCounter%2==1 and SelectedPiece[0]=="w"):
+              # move counter decrament is probabably
+              # causing a problem here
+              MoveCounter = MoveCounter -1
+              raise Exception("can't move that peice")
+
+            Chess.move(userStartLet,userStartNum,userEndLet,userEndNum)
+
+          except:
+            MoveCounter = MoveCounter - 1
+            print("Make a valid move")
+
 
       MoveCounter = MoveCounter + 1
       print("Move counter value ")
