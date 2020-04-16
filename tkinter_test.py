@@ -18,7 +18,8 @@ class BoardGUI(gui.Frame):
         canvas_height = rows * size
 
         gui.Frame.__init__(self, parent)
-        self.canvas = gui.Canvas(self, borderwidth=0, highlightthickness=0, width=canvas_width, height=canvas_height, background="white")
+        self.canvas = gui.Canvas(self, borderwidth=0, highlightthickness=0, width=canvas_width, height=canvas_height,
+                                 background="white")
         self.canvas.pack(side="top", fill="both", expand=True, padx=1, pady=1)
 
         self.canvas.bind("<Configure>", self.refresh)
@@ -39,9 +40,7 @@ class BoardGUI(gui.Frame):
                 self.canvas.create_rectangle(x1, y1, x2, y2, outline="black", fill=color, tags="square")
                 color = self.color1 if color == self.color2 else self.color2
 
-
-
-    #def click(self, event):
+    # def click(self, event):
         # event.x & y return coordinates, narrow down to row/column combo
         # this will likely need to be changed... what is tkiniter
         # current_col = event.x/8
@@ -53,9 +52,9 @@ class BoardGUI(gui.Frame):
         # TODO: implement move function
         # visual feedback of selection?
 
-
     # use board functions
     # def move(self):
+
 
 if __name__ == "__main__":
     root = gui.Tk()
