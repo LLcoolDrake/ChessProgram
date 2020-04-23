@@ -37,3 +37,20 @@ class spritesheet(object):
         tups = [(rect[0]+rect[2]*x, rect[1], rect[2], rect[3])
                 for x in range(image_count)]
         return self.images_at(tups, colorkey)
+    def load_all_images(self, rows, cols):
+        sheet_rect = self.sheet.get_rect()
+        sheet_width, sheet_height = sheet_rect.size
+
+        sprite_x = (sheet_width / cols)
+        sprite_y = (sheet_height / rows)
+
+        sprite_rects = []
+
+        for row in range(rows):
+            for col in range(cols):
+                x = col * sprite_x
+                y = row * sprite_y
+                sprite_rect = (x, y, sprite_x, sprite_y)
+                sprite_rects.append(sprite_rect)
+
+        return self.images_at(sprite_rects, -1)
