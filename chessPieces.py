@@ -12,7 +12,7 @@ class ChessPieces:
 
         piece_images = piece_sprites.load_all_images(2, 6)
 
-        piece_names = ['wP', 'wR', 'wK', 'wB', 'wQ', 'wKK', 'bP', 'bR', 'bK', 'bB', 'bQ', 'bKK']
+        piece_names = ["wP", "wR", "wK", "wB", "wQ", "wKK", "bP", "bR", "bK", "bB", "bQ", "bKK"]
         piece_num = 0
 
         for name in piece_names:
@@ -21,15 +21,6 @@ class ChessPieces:
             piece.image = piece_images[piece_num]
             self.pieces.append(piece)
             piece_num += 1
-
-        # display white pawn
-        # wp_rect = (0, 0, 28, 44)
-        # wp_image = piece_sprites.image_at(wp_rect, -1)
-        #
-        # wp = chessPiece(self.chess_gui)
-        # wp.image = wp_image
-        # wp.name = 'wP'
-        # self.pieces.append(wp)
 
 
 class chessPiece:
