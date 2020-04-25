@@ -2,7 +2,6 @@ import sys
 import pygame
 
 from chessPieces import ChessPieces
-from settings import Settings
 from CHESSGUISandBox import Board
 
 class GUI:
@@ -12,8 +11,7 @@ class GUI:
 
   def __init__(self):
     pygame.init()
-    self.settings = Settings()
-    self.screen = pygame.display.set_mode((self.settings.width, self.settings.height))
+    self.screen = pygame.display.set_mode((400, 400))
     pygame.display.set_caption("CS 205 Chess")
 
     self.chess_pieces = ChessPieces(self)
