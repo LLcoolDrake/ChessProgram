@@ -21,11 +21,11 @@ class GUI:
 
   def play_game(self):
     while True:
-      self._check_events()
-      self._update_screen()
+      self.check_events()
+      self.update_screen()
 
   # quit with press of q
-  def _check_events(self):
+  def check_events(self):
     for event in pygame.event.get():
       if event.type == pygame.QUIT:
         sys.exit()
@@ -33,7 +33,7 @@ class GUI:
         if event.key == pygame.K_q:
           sys.exit()
 
-  def _update_screen(self):
+  def update_screen(self):
     for row in range(8):
         for col in range(8):
             if self.board.Board[row][col] == "wP":
