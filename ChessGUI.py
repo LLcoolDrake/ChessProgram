@@ -2,20 +2,19 @@ import sys
 import pygame
 
 from chessPieces import ChessPieces
-from CHESSGUISandBox import Board
 
 class GUI:
 
 
   GameName = "chess"
 
-  def __init__(self):
+  def __init__(self, board):
     pygame.init()
     self.screen = pygame.display.set_mode((400, 400))
     pygame.display.set_caption("CS 205 Chess")
 
     self.chess_pieces = ChessPieces(self)
-    self.board = Board()
+    self.board = board
     my_image = pygame.image.load("ChessBoard.png").convert()
     self.screen.blit(my_image,(0,0))
 
@@ -109,7 +108,3 @@ class GUI:
       row = y/50
       col = x/50
       return (row, col)
-
-if __name__ == '__main__':
-  chess_gui = GUI()
-  chess_gui.play_game()

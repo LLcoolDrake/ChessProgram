@@ -1,7 +1,7 @@
 import copy
 import random
-import pygame
-#from ChessGUI import GUI
+
+import ChessGUI
 #from AI import AIBrain
 
 class Board:
@@ -1733,7 +1733,7 @@ class Board:
 def main():
 	 
 
-    #CHESSGUI = GUI()
+
     
 
     global MoveCounter 
@@ -1742,6 +1742,10 @@ def main():
     MoveCounter = 0
     CheckMate = False 
     Chess = Board()
+
+    # CALL GUI: DISPLAYS INITIAL BOARD, STILL NEED CLICK
+    CHESSGUI = ChessGUI.GUI(Chess)
+    CHESSGUI.play_game()
 
     # Call to Chess AIBrain creation. 
     #CHESSAI = AIBrain(Chess.Board,BoardPrint);
@@ -1843,4 +1847,4 @@ def main():
 
       MoveCounter = MoveCounter + 1
 
-#main()
+main()
