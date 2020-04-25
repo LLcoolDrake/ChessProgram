@@ -1,6 +1,7 @@
 import copy
 import random
 import time as t
+from AI import AIBrain
 # used to feed moves if king has to move out of check
 
 
@@ -2155,6 +2156,7 @@ def main():
     MoveCounter = 0
     CheckMate = False 
     Chess = Board()
+    # brain = AIBrain(Chess, )
     Chess.printBoard()
 
     while(CheckMate!=True):
@@ -2188,24 +2190,27 @@ def main():
       # Move counter is not WORKING if a peice puts a king in check
      # print("upper move counter")
       #print(MoveCounter)
-      try:
+      # try:
 
-        if(MoveCounter%2==1):
+        if(MoveCounter%2==0):
           userStartLet = int(input("enter start Let (vertical column): "))
           userStartNum  = int(input("enter start num (horizontal column): "))
           userEndLet  = int(input("enter end Let (vertical column: "))
           userEndNum  = int(input("enter end Num (horizontal column): "))
 
-        elif(MoveCounter%2==0):
+        elif(MoveCounter%2==1):
+
            # Start of White random AI 
           #print("Whites turn to move")
           #print("White is thinking pretty hard")
           #t.sleep(1)
+            bestMove = []
+            # bestMove = brain.returnBestMove(Chess)
 
-          userStartLet = random.randint(0, 7)
-          userStartNum = random.randint(0, 7)
-          userEndLet = random.randint(0, 7)
-          userEndNum = random.randint(0, 7)
+            userStartLet = bestMove[1]
+            userStartNum = bestMove[2]
+            userEndLet = bestMove[3]
+            userEndNum = bestMove[4]
         
         
         
@@ -2218,7 +2223,7 @@ def main():
         if(MoveCounter%2==1 and SelectedPiece[0]=="w"):
           # move counter decrament is probabably 
           # causing a problem here
-          #MoveCounter = MoveCounter -1
+          #MoveCounter = MoveCounter - 1
           raise Exception("can't move that peice")
       
         if(Chess.move(userStartLet,userStartNum,userEndLet,userEndNum)==True):
@@ -2231,9 +2236,9 @@ def main():
 
 
         
-      except:
-        
-        MoveCounter = MoveCounter - 1
+      # except:
+      #
+      #   MoveCounter = MoveCounter - 1
         
       
 
