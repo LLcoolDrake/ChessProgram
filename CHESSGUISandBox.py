@@ -1,7 +1,7 @@
 import copy
 import random
 import pygame
-from ChessGUI import GUI
+#from ChessGUI import GUI
 #from AI import AIBrain
 
 class Board:
@@ -1733,7 +1733,7 @@ class Board:
 def main():
 	 
 
-    CHESSGUI = GUI()
+    #CHESSGUI = GUI()
     
 
     global MoveCounter 
@@ -1843,4 +1843,4 @@ def main():
 
       MoveCounter = MoveCounter + 1
 
-main()  
+#main()
