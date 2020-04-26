@@ -6,7 +6,7 @@ from ChessGUI import GUI
 
 class Board:
 	      
-  Board = [["wR","wK","wB","wQ","wKK","wB","wK","wR"],["wP","wP","wP","wP","wP","wP","wP","wP"],["--","--","--","--","--","--","--","--"],["--","--","--","--","--","--","--","--"],["--","--","--","--","--","--","--","--"],["--","--","--","--","--","--","--","--"],["bP","bP","bP","bP","bP","bP","bP","bP"],["bR","bK","bB","bKK","bQ","bB","bK","bR"]]  
+  Board = [["wR","wK","wB","wKK","wQ","wB","wK","wR"],["wP","wP","wP","wP","wP","wP","wP","wP"],["--","--","--","--","--","--","--","--"],["--","--","--","--","--","--","--","--"],["--","--","--","--","--","--","--","--"],["--","--","--","--","--","--","--","--"],["--","bP","bP","bP","bP","bP","bP","bP"],["bR","bK","bB","bKK","bQ","bB","bK","bR"]]  
 	 
   BlackKingsPosition = [7,3]
   WhiteKingsPosition = [0,4]
@@ -134,6 +134,7 @@ class Board:
     # start of rook logic
 
     if(Piece == R ):
+
       
       if(self.samePiece(endLet,endNum,Piece)==True):
         return False
@@ -171,18 +172,24 @@ class Board:
 
     if(Piece == K):
 
+      print("kkk")
+
       if(self.samePiece(endLet,endNum,Piece)==True):
         return False
                 
         # 2 up 1 left
+      print("yyy")
+      if((endLet)>=0 and (endLet)<= 7 and (endNum)>=0 and (endNum)<=7):
+
+
         
-      if((startLet-endLet)>=0 and (startLet-endLet)<= 7 and (startNum-endNum)>=0 and (startNum-endNum)<=7):
           
         if((startLet-endLet) == 2 and (startNum-endNum==1)):
           return True;
 
         # 2 Up and 1 Right
         if((startLet-endLet)==2 and (startNum-endNum==-1)):  
+          print("ttt")
           return True
 
           # 2 left one down
@@ -779,62 +786,75 @@ class Board:
 
     # handle Bishop up and to the left
 
-    for x in range(1,KingsPiece[0]+1,1):
-      try:
-        if(self.Board[KingsPiece[0]-x][KingsPiece[1]-x]!="--" and (KingsPiece[1]-x)>=0 and (KingsPiece[0]-x>=0)):
-          if(self.Board[KingsPiece[0]-x][KingsPiece[1]-x]==Q or self.Board[KingsPiece[0]-x][KingsPiece[1]-x]==B):
-          
-            return True
-          else:
-            break
-      except:
+    HorizontalTracker = KingsPiece[1]
+    for x in range(KingsPiece[0]-1,-1,-1):
+      
+      HorizontalTracker = HorizontalTracker - 1
+      if(HorizontalTracker<0):
         break
+
+      if(self.Board[x][HorizontalTracker]!="--" ):
+        if(self.Board[x][HorizontalTracker]==Q or self.Board[x][HorizontalTracker]==B):
+          
+          return True
+        else:
+          break
+      
              
 
     # handles Bishop up and to the right
 
 
+    HorizontalTrakcer = KingsPiece[1]
+    for x in range(KingsPiece[0]-1,-1,-1):
+      
+      HorizontalTracker = HorizontalTracker + 1
+      if(HorizontalTracker>7):
+        break
 
-    for x in range(1,KingsPiece[0]+1,1):
-      try:
-        if(self.Board[KingsPiece[0]-x][KingsPiece[1]+x]!="--" and (KingsPiece[1]-x)>=0 and (KingsPiece[0]-x>=0)):
-          if(self.Board[KingsPiece[0]-x][KingsPiece[1]+x]==Q or self.Board[KingsPiece[0]-x][KingsPiece[1]+x]==B):
-            return True
-          else:
-            break
-      except:
-        break 
+
+      if(self.Board[x][HorizontalTracker]!="--"):
+        if(self.Board[x][HorizontalTracker]==Q or self.Board[x][HorizontalTracker]==B):
+          return True
+        else:
+          break
+     
        
         #else:
          # return False 
 
     # handles Bishop down and to the Right
 
+    HorizontalTracker = KingsPiece[1]
     for x in range(KingsPiece[0]+1,8,1):
-      LC = 1
-      try:
-        if(self.Board[x][KingsPiece[1]+LC]!="--" ):
-          if(self.Board[x][KingsPiece[1]+LC]==Q or self.Board[x][KingsPiece[1]+LC]==B):
-            return True
-          else:
-            break
-        LC = LC + 1
-      except:
+      HorizontalTracker = HorizontalTracker - 1
+      if(HorizontalTracker > 7):
         break
+
+      
+      if(self.Board[x][HorizontalTracker]!="--" ):
+        if(self.Board[x][HorizontalTracker]==Q or self.Board[x][HorizontalTracker]==B):
+          return True
+        else:
+          break
+        
+    
 
     # handles Bishot down and to the Left
 
+    HorizontalTracker = KingsPiece[1]
     for x in range(KingsPiece[0]+1,8,1):
-      RC = 1
-      try:
-        if(self.Board[x][KingsPiece[1]-RC]!="--" and KingsPiece[1]):
-          if((self.Board[x][KingsPiece[1]-RC]==Q or self.Board[x][KingsPiece[1]-RC]==B) and KingsPiece[1]-RC >=0):
-            return True
-          else:
-            break
-        RC = RC + 1
-      except:
+      
+      HorizontalTracker = HorizontalTrakcer - 1 
+      if(HorizontalTracker <0):
         break
+      
+      if(self.Board[x][HorizontalTracker]!="--"):
+        if(self.Board[x][HorizontalTracker]==Q or self.Board[x][HorizontalTracker]==B):
+          return True
+        else:
+          break
+        
 
 
     # Check for pawns
@@ -1199,7 +1219,7 @@ class Board:
     # 
 
 
-    if((KingsPiece[0]+2 )< 0 and (KingsPiece[1]-1)<0 and (KingsPiece[1]-1)>7 and (KingsPiece[0]+2)>7):
+    if((KingsPiece[0]+2 )<= 7 and (KingsPiece[1]-1)>=0 and (KingsPiece[1]-1)<=7 and (KingsPiece[0]+2)>=0):
        
       slice = self.Board[KingsPiece[0]+2][KingsPiece[1]-1]
 
@@ -1209,7 +1229,7 @@ class Board:
   
 
 
-    if((KingsPiece[0]+2 )< 0 and (KingsPiece[1]+1)<0 and (KingsPiece[1]+1)>7 and (KingsPiece[0]+2)>7):
+    if((KingsPiece[0]+2 )<=7 and (KingsPiece[1]+1)<=7 and (KingsPiece[1]+1)>=0 and (KingsPiece[0]+2)>=0):
       
       slice = self.Board[KingsPiece[0]+2][KingsPiece[1]+1]
 
@@ -1218,7 +1238,7 @@ class Board:
    
 
 
-    if((KingsPiece[0]+1 )< 0 and (KingsPiece[1]+2)<0 and (KingsPiece[1]+2)>7 and (KingsPiece[0]+1)>7):
+    if((KingsPiece[0]+1 )<=7 and (KingsPiece[1]+2)<=7 and (KingsPiece[1]+2)>=0 and (KingsPiece[0]+1)>=0):
         
       slice = self.Board[KingsPiece[0]+1][KingsPiece[1]+2]  
       if(slice==K):
@@ -1228,7 +1248,7 @@ class Board:
 
   
 
-    if((KingsPiece[0]+1 )< 0 and (KingsPiece[1]-2)<0 and (KingsPiece[1]-2)>7 and (KingsPiece[0]+1)>7):
+    if((KingsPiece[0]+1 )<=7 and (KingsPiece[1]-2)<=7 and (KingsPiece[1]-2)>=0 and (KingsPiece[0]+1)>=0):
         
       slice = self.Board[KingsPiece[0]+1][KingsPiece[1]-2]  
 
@@ -1239,7 +1259,7 @@ class Board:
 
 
       
-    if((KingsPiece[0]-2 )< 0 and (KingsPiece[1]-1)<0 and (KingsPiece[1]-1)>7and (KingsPiece[0]-2)>7):
+    if((KingsPiece[0]-2 )<=7 and (KingsPiece[1]-1)<=7 and (KingsPiece[1]-1)>=0 and (KingsPiece[0]-2)>=0):
         
       slice = self.Board[(KingsPiece[0]-2)][(KingsPiece[1]-1)]
       if(self.Board[KingsPiece[0]-2][KingsPiece[1]-1]==K):
@@ -1248,7 +1268,7 @@ class Board:
   
 
 
-    if((KingsPiece[0]-2 )< 0 and (KingsPiece[1]+1)<0 and (KingsPiece[1]+1)>7and (KingsPiece[0]-2)>7):
+    if((KingsPiece[0]-2 )<=7 and (KingsPiece[1]+1)<=7 and (KingsPiece[1]+1)>=0 and (KingsPiece[0]-2)>=0):
         
       slice = self.Board[KingsPiece[0]-2][KingsPiece[1]+1]
 
@@ -1257,7 +1277,7 @@ class Board:
    
 
 
-    if((KingsPiece[0]-1 )< 0 and (KingsPiece[1]+2)<0 and (KingsPiece[1]+2)>7and (KingsPiece[0]-1)>7):
+    if((KingsPiece[0]-1 )<=7 and (KingsPiece[1]+2)<=7 and (KingsPiece[1]+2)>=0and (KingsPiece[0]-1)>=0):
 
       slice = self.Board[KingsPiece[0]-1][KingsPiece[1]+2]  
 
@@ -1266,7 +1286,7 @@ class Board:
     
 
       
-    if((KingsPiece[0]-1 )< 0 and (KingsPiece[1]-2)<0 and (KingsPiece[1]-2)>7 and (KingsPiece[0]-1)>7):
+    if((KingsPiece[0]-1 )<=7 and (KingsPiece[1]-2)<=7 and (KingsPiece[1]-2)>=0 and (KingsPiece[0]-1)>=0):
       
       slice = self.Board[KingsPiece[0]-1][KingsPiece[1]-2]
 
@@ -1280,7 +1300,7 @@ class Board:
 
 
     # searches for rook or queen to the left of king
-    for x in range(0,KingsPiece[1],-1):
+    for x in range(KingsPiece[1]-1,-1,-1):
       if(self.Board[KingsPiece[0]][x]!="--"):
 
         slice = self.Board[KingsPiece[0]][x]
@@ -1294,7 +1314,7 @@ class Board:
     # searches for rook or queen to the right of king
     # the extra plus 1 some how fixed the double queen handling error
     # in the center of the board
-    for x in range(KingsPiece[1]+1,7+1,1):
+    for x in range(KingsPiece[1]+1,8,1):
       if(self.Board[KingsPiece[1]][x]!="--"):
 
         slice = self.Board[KingsPiece[1]][x]
@@ -1313,17 +1333,17 @@ class Board:
    # print("stage")
    # print(OppPeices)
 
-    for x in range(1,KingsPiece[0]+1,1):  
-      if(self.Board[KingsPiece[0]-x][KingsPiece[1]]!="--"):
+    for x in range(KingsPiece[0]-1,-1,-1):  
+      if(self.Board[x][KingsPiece[1]]!="--"):
 
-        slice = self.Board[KingsPiece[0]-x][KingsPiece[1]]
+        slice = self.Board[x][KingsPiece[1]]
         
         if(slice==Q): 
      #     print("append queen")
-          OppPeices.append([KingsPiece[0]-x,KingsPiece[1]])
+          OppPeices.append([x,KingsPiece[1]])
         
         elif(slice==R):
-          OppPeices.append([KingsPiece[0]-x,KingsPiece[1]])
+          OppPeices.append([x,KingsPiece[1]])
         #else:
           #return False 
         break
@@ -1331,7 +1351,7 @@ class Board:
     #print("queen end testing") 
 
     # searches for rook or Queen in the down positon
-    for x in range(KingsPiece[0],7,1):
+    for x in range(KingsPiece[0]+1,8,1):
       if(self.Board[x][KingsPiece[1]]!="--"):
         slice = self.Board[x][KingsPiece[1]]
         if(slice==Q): 
@@ -1345,71 +1365,82 @@ class Board:
 
     # handle Bishop up and to the left
 
-    for x in range(1,KingsPiece[0],1):
-      if(self.Board[KingsPiece[0]-x][KingsPiece[1]-x]!="--"):
+    for x in range(KingsPiece[0]-1,-1,-1):
+      
+      HorizontalTracker = KingsPiece[1] - 1
+      if(HorizontalTracker<0):
+        break
+      
+      if(self.Board[x][HorizontalTrakcer]!="--"):
 
-        slice = self.Board[KingsPiece[0]-x][KingsPiece[1]-x]
+        slice = self.Board[x][HorizontalTracker]
         if(slice==Q): 
-          OppPeices.append([KingsPiece[0]-x,KingsPiece[1]-x])
+          OppPeices.append([x,HorizontalTracker])
         elif(slice==B):
-          OppPeices.append([KingsPiece[0]-x,KingsPiece[1]-x])
+          OppPeices.append([x,HorizontalTracker])
         break   
         #else:
           #return False 
 
+   
+   
     # handles Bishop up and to the right
 
+    for x in range(KingsPiece[0]-1,-1,-1):
+      HorizontalTracker = HorizontalTraker + 1
+      
+      if(HorizontalTracker > 7):
+        break
 
+      if(self.Board[x][HorizontalTracker]!="--"):
 
+        slice = self.Board[x][HorizontalTracker]
+        if(slice==Q): 
+          OppPeices.append([x,HorizontalTracker])
+        elif(slice==B):
+          OppPeices.append([x,HorizontalTracker])
+        break
 
-    for x in range(1,KingsPiece[0],1):
-      try:
-        if(self.Board[KingsPiece[0]-x][KingsPiece[1]+x]!="--"):
-
-          slice = self.Board[KingsPiece[0]-x][KingsPiece[1]+x]
-          if(slice==Q): 
-            OppPeices.append([KingsPiece[0]-x,KingsPiece[1]+x])
-          elif(slice==B):
-            OppPeices.append([KingsPiece[0]-x,KingsPiece[1]+x])
-          break
-
-      except: 
-        b = 3 
+      
         #else:
          # return False 
 
     # handles Bishop down and to the Right
 
-    for x in range(KingsPiece[0],7,1):
+    for x in range(KingsPiece[0]+1,8,1):
 
-      try:
-        if(self.Board[KingsPiece[0]+x][KingsPiece[1]+x]!="--"):
+      HorizontalTraker = HorizontalTracker + 1    
+      if(HorizontalTracker > 0):
+        break
+
+      if(self.Board[x][HorizontalTracker]!="--"):
           
-          slice = self.Board[KingsPiece[0]+x][KingsPiece[1]+x] 
-          if(slice==Q): 
-            OppPeices.append([KingsPiece[0]+x,KingsPiece[1]+x])
-          elif(slice==B):
-            OppPeices.append([KingsPiece[0]+x,KingsPiece[1]+x])
-          break
-      except:
-        b = 3
+        slice = self.Board[x][HorizontalTracker] 
+        if(slice==Q): 
+          OppPeices.append([x,HorizontalTracker])
+        elif(slice==B):
+          OppPeices.append([x,HorizontalTracker])
+        break
+      
 
     # handles Bishop down and to the Left
 
-    for x in range(KingsPiece[0],7,1):
+    for x in range(KingsPiece[0]+1,8,1):
 
-      try:
-        if(self.Board[KingsPiece[0]+x][KingsPiece[1]-x]!="--"):
+      HorizontalTracker = HorizontalTracker - 1
+      if(HorizontalTracker < 0):
+        break
+      
+      if(self.Board[x][HorizontalTracker]!="--"):
 
-          slice = self.Board[KingsPiece[0]+x][KingsPiece[1]-x]
-          if(slice==Q): 
-            OppPeices.append([KingsPiece[0]+x,KingsPiece[1]-x])
+        slice = self.Board[x][HorizontalTracker]
+        if(slice==Q): 
+          OppPeices.append([x,HorizontalTracker])
           
-          elif(slice==B):
-            OppPeices.append([KingsPiece[0]+x,KingsPiece[1]-x])
-          break
-      except:
-        continue
+        elif(slice==B):
+          OppPeices.append([x,HorizontalTracker])
+        break
+     
 
 
     # NEEED TO HANDLE PAWNS
@@ -1437,12 +1468,12 @@ class Board:
       #print(TestPeice)
     # if you cant block the check return false
     # this signifys a check mate and the game ends
-      if(self.BlockCheck(TestPeice)==False):
+      if(self.BlockCheck(TestPeice)==True):
        
-        return False
+        return True
    
     
-    return True    
+    return False    
 
   def BlockCheck(self,TestPeice):
 
