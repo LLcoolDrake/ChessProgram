@@ -20,7 +20,6 @@ class GUI:
 
 
   def play_game(self):
-    while True:
       self.check_events()
       self.update_screen()
 
@@ -32,6 +31,12 @@ class GUI:
       elif event.type == pygame.KEYDOWN:
         if event.key == pygame.K_q:
           sys.exit()
+      elif event.type == pygame.MOUSEBUTTONDOWN:
+          cords = pygame.mouse.get_pos()
+          # cell contains coordinates of last click
+          cell = (cords[0] // 50 + 1, cords[1] // 50 + 1)
+          print(cell)
+          return cell
 
   def update_screen(self):
     for row in range(8):

@@ -1778,11 +1778,18 @@ def main():
         if(BoardPrint%2==1):
 
            #GUI team this is where your gui.moveclick
-           # function outputs its clicked ValueError    
-          userStartLet = random.randint(0, 7)
-          userStartNum = random.randint(0, 7)
-          userEndLet = random.randint(0, 7)
-          userEndNum = random.randint(0, 7)
+           # function outputs its clicked ValueError
+          # keeps repeating this call
+          cell = CHESSGUI.check_events()
+          userStartLet = cell[0]
+          print(userStartLet)
+          userStartNum = cell[1]
+          print(userStartNum)
+          # never gets past here
+          cell = CHESSGUI.check_events()
+          userEndLet = cell[0]
+          userEndNum = cell[1]
+          print (userEndLet + " " + userEndNum)
           
           
           #userStartLet = int(input("enter start Let (vertical column): "))

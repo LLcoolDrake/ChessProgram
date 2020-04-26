@@ -1,6 +1,6 @@
 import pygame
 
-file = "../untitled/chessSprites.gif"
+file = "chessSprites.gif"
 
 COLORS = ((119, 103, 103), (255, 255, 255))
 
