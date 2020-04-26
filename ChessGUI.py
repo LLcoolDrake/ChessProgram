@@ -26,17 +26,18 @@ class GUI:
   # quit with press of q
   def check_events(self):
     for event in pygame.event.get():
-      if event.type == pygame.QUIT:
+      if event.type == pygame.MOUSEBUTTONDOWN:
+          cords = pygame.mouse.get_pos()
+          # cell contains coordinates of last click
+          cell = (cords[0] // 50, cords[1] // 50)
+          print(cell)
+          return cell
+      elif event.type == pygame.QUIT:
         sys.exit()
       elif event.type == pygame.KEYDOWN:
         if event.key == pygame.K_q:
           sys.exit()
-      elif event.type == pygame.MOUSEBUTTONDOWN:
-          cords = pygame.mouse.get_pos()
-          # cell contains coordinates of last click
-          cell = (cords[0] // 50 + 1, cords[1] // 50 + 1)
-          print(cell)
-          return cell
+
 
   def update_screen(self):
     for row in range(8):
