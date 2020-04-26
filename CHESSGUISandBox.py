@@ -1743,9 +1743,9 @@ def main():
     CheckMate = False 
     Chess = Board()
 
-    # CALL GUI: DISPLAYS INITIAL BOARD, STILL NEED CLICK
-    CHESSGUI = ChessGUI.GUI(Chess)
-    CHESSGUI.play_game()
+    CHESSGUI = ChessGUI.GUI()
+    CHESSGUI.update_screen(Chess)
+
 
     # Call to Chess AIBrain creation. 
     #CHESSAI = AIBrain(Chess.Board,BoardPrint);
@@ -1779,23 +1779,22 @@ def main():
 
            #GUI team this is where your gui.moveclick
            # function outputs its clicked ValueError
-          # keeps repeating this call
-          cell = CHESSGUI.check_events()
-          userStartLet = cell[0]
-          print(userStartLet)
-          userStartNum = cell[1]
-          print(userStartNum)
-          # never gets past here
-          cell = CHESSGUI.check_events()
-          userEndLet = cell[0]
-          userEndNum = cell[1]
-          print (userEndLet + " " + userEndNum)
+
+          move = CHESSGUI.moveClick()
+          userStartNum = move[0]
+          userStartLet = move[1]
+          print(str(userStartLet) + " " + str(userStartNum))
+
+          userEndNum = move[2]
+          userEndLet = move[3]
+
+
           
           
-          #userStartLet = int(input("enter start Let (vertical column): "))
-          #userStartNum  = int(input("enter start num (horizontal column): "))
-          #userEndLet  = int(input("enter end Let (vertical column: "))
-          #userEndNum  = int(input("enter end Num (horizontal column): "))
+          # userStartLet = int(input("enter start Let (vertical column): "))
+          # userStartNum  = int(input("enter start num (horizontal column): "))
+          # userEndLet  = int(input("enter end Let (vertical column: "))
+          # userEndNum  = int(input("enter end Num (horizontal column): "))
 
         elif(BoardPrint%2==0):
            # Start of White random AI 
@@ -1841,6 +1840,9 @@ def main():
           print(Chess.WhiteKingsPosition)
           print(Chess.BlackKingsPosition)
           Chess.printBoard()
+
+          CHESSGUI.update_screen(Chess)
+
           #t.sleep(2)
           if(BoardPrint%2==1):
             print("Blacks turn to make a  move")
