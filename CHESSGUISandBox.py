@@ -1,8 +1,8 @@
 import copy
 import random
-# import pygame
-#from ChessGUI import GUI
-from AI import AIBrain
+
+import ChessGUI
+#from AI import AIBrain
 
 class Board:
 	      
@@ -713,6 +713,7 @@ class Board:
     # redundent False incase something ever sliped through
     # which it shouldn't
     return False
+  
 
   def OpposingPiece(self,endLet,endNum,Piece):
 
@@ -910,7 +911,7 @@ class Board:
       return True
     else:
 
-      # MoveCounter = MoveCounter - 1
+      MoveCounter = MoveCounter - 1
       return False
       
       # this return isn't really needed 
@@ -2117,7 +2118,7 @@ class Board:
 
     return bestMove
 
-  	
+
 def main():
 	 
 
@@ -2131,8 +2132,12 @@ def main():
     CheckMate = False 
     Chess = Board()
 
-    # Call to Chess AIBrain creation. 
-    # CHESSAI = AIBrain(Chess.Board,BoardPrint)
+    # CALL GUI: DISPLAYS INITIAL BOARD, STILL NEED CLICK
+    CHESSGUI = ChessGUI.GUI(Chess)
+    CHESSGUI.play_game()
+
+    # Call to Chess AIBrain creation.
+    #CHESSAI = AIBrain(Chess.Board,BoardPrint);
 
     Chess.printBoard()
 
@@ -2173,9 +2178,27 @@ def main():
           userStartNum  = int(input("enter start num (horizontal column): "))
           userEndLet  = int(input("enter end Let (vertical column: "))
           userEndNum  = int(input("enter end Num (horizontal column): "))
+           # function outputs its clicked ValueError
+          # keeps repeating this call
+          cell = CHESSGUI.check_events()
+          userStartLet = cell[0]
+          print(userStartLet)
+          userStartNum = cell[1]
+          print(userStartNum)
+          # never gets past here
+          cell = CHESSGUI.check_events()
+          userEndLet = cell[0]
+          userEndNum = cell[1]
+          print (userEndLet + " " + userEndNum)
+
+
+          #userStartLet = int(input("enter start Let (vertical column): "))
+          #userStartNum  = int(input("enter start num (horizontal column): "))
+          #userEndLet  = int(input("enter end Let (vertical column: "))
+          #userEndNum  = int(input("enter end Num (horizontal column): "))
 
         elif(BoardPrint%2==0):
-           # Start of White random AI
+           # Start of White random AI 
           #print("Whites turn to move")
           #print("White is thinking pretty hard")
           #t.sleep(1)
@@ -2196,16 +2219,16 @@ def main():
           # userEndLet = random.randint(0, 7)
           # userEndNum = random.randint(0, 7)
           #print(str(userStartLet) + " " +str(userStartNum) + " "+str(userEndLet) + " " + str(userEndNum))
-
-
-
+        
+        
+        
         SelectedPiece = Chess.Board[userStartLet][userStartNum]
         if(BoardPrint%2==0 and (SelectedPiece[0]=="b" or SelectedPiece[0]=="-") ):
           # move counter decrament is probably causing a problem here
           #MoveCounter = MoveCounter - 1
           raise Exception("cant move that piece")
         if(BoardPrint%2==1 and (SelectedPiece[0]=="w" or SelectedPiece[0]=="-")):
-          # move counter decrament is probabably
+          # move counter decrament is probabably 
           # causing a problem here
           #MoveCounter = MoveCounter -1
           raise Exception("can't move that peice")
@@ -2222,12 +2245,12 @@ def main():
           #t.sleep(2)
           if(BoardPrint%2==1):
             print("Blacks turn to make a  move")
-          else:
-            raise Exception("Not legal move try again")
-          #userwait = input("press enter for next move")
+        else:
+          raise Exception("Not legal move try again")
+        #userwait = input("press enter for next move")
    
       except:
-
+        
         MoveCounter = MoveCounter - 1
 
       MoveCounter = MoveCounter + 1
