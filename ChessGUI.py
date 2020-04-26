@@ -25,15 +25,14 @@ class GUI:
             cords = pygame.mouse.get_pos()
             move_cords.append(cords[0] // 50)
             move_cords.append(cords[1] // 50)
-            print("hi")
             print(move_cords)
-        event2 = pygame.event.wait()
-        if event2.type == pygame.MOUSEBUTTONDOWN:
-            cords = pygame.mouse.get_pos()
-            move_cords.append(cords[0] // 50)
-            move_cords.append(cords[1] // 50)
-            print("hey")
-            print(move_cords)
+        # event = pygame.event.wait()
+        # if event.type == pygame.MOUSEBUTTONDOWN:
+        #     cords = pygame.mouse.get_pos()
+        #     move_cords.append(cords[0] // 50)
+        #     move_cords.append(cords[1] // 50)
+        #     print("hey")
+        #     print(move_cords)
       return move_cords
 
   def update_screen(self, board):
