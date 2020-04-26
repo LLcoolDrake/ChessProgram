@@ -1,15 +1,23 @@
 import copy
 import random
-
-import ChessGUI
+import pygame
+from ChessGUI import GUI
 #from AI import AIBrain
 
 class Board:
 	      
-  Board = [["wR","wK","wB","wQ","wKK","wB","wK","wR"],["--","wP","--","--","wP","wP","--","wP"],["--","--","--","bB","--","--","--","--"],["--","--","wP","--","--","--","--","--"],["--","--","--","--","--","--","--","--"],["--","--","--","--","--","--","--","wP"],["wB","--","--","bP","--","bP","bP","bP"],["bQ","--","bB","bKK","bP","bB","bK","bP"]]  
+  Board = [["wR","wK","wB","wQ","wKK","wB","wK","wR"],["wP","wP","wP","wP","wP","wP","wP","wP"],["--","--","--","--","--","--","--","--"],["--","--","--","--","--","--","--","--"],["--","--","--","--","--","--","--","--"],["--","--","--","--","--","--","--","--"],["--","bP","bP","bP","bP","bP","bP","bP"],["bR","bK","bB","bKK","bQ","bB","bK","bR"]]  
 	 
   BlackKingsPosition = [7,3]
   WhiteKingsPosition = [0,4]
+
+  # hash keys cant be lists srs. 0 is top Left
+  # 63 is bottom right. use % to find correct location on 
+  # board
+
+  WhitePieces = {0: "wR", 1: "wK", 2: "wB", 3: "wQ", 4: "wKK", 5: "wB", 6: "wK", 7: "wR", 8: "wP", 9: "wP", 10: "wP", 11: "wP", 12: "wP", 13: "wP", 14: "wP", 15: "wP"}
+
+  BlackPieces = {48:"bP",49:"bP",50:"bP",51:"bP",52:"bP",53:"bP",54:"bP",55:"bP",56:"bR",57:"bK",58:"bB",59:"bKK",60:"bQ",61:"bB",62:"bK",63:"bR"}
 
   AvailableKingMoves = [0,0,0,0,0,0,0,0]
   AvailableMoves = "Empty"  
@@ -34,6 +42,7 @@ class Board:
 
   def isValidMove(self,Piece,startLet,endLet,startNum,endNum):
   
+    #print(Piece)
     if(MoveCounter%2==0):
       KingsPosition = copy.deepcopy(self.WhiteKingsPosition)
       KK = "wKK"
@@ -125,6 +134,7 @@ class Board:
     # start of rook logic
 
     if(Piece == R ):
+
       
       if(self.samePiece(endLet,endNum,Piece)==True):
         return False
@@ -162,18 +172,24 @@ class Board:
 
     if(Piece == K):
 
+      print("kkk")
+
       if(self.samePiece(endLet,endNum,Piece)==True):
         return False
                 
         # 2 up 1 left
+      print("yyy")
+      if((endLet)>=0 and (endLet)<= 7 and (endNum)>=0 and (endNum)<=7):
+
+
         
-      if((startLet-endLet)>=0 and (startLet-endLet)<= 7 and (startNum-endNum)>=0 and (startNum-endNum)<=7):
           
         if((startLet-endLet) == 2 and (startNum-endNum==1)):
           return True;
 
         # 2 Up and 1 Right
         if((startLet-endLet)==2 and (startNum-endNum==-1)):  
+          print("ttt")
           return True
 
           # 2 left one down
@@ -379,341 +395,7 @@ class Board:
     # redundent False incase something ever sliped through
     # which it shouldn't
     return False
-
-
- # Separate isValidMove function for AI '''
-  def isValidMove2(self, Piece, startLet, endLet, startNum, endNum):
-
-    if Piece[0] == 'w':
-      KingsPosition = copy.deepcopy(self.WhiteKingsPosition)
-      KK = "wKK"
-      Q = "wQ"
-      R = "wR"
-      K = "wK"
-      B = "wB"
-      P = "wP"
-
-    if Piece[0] == 'b':
-      KingsPosition = copy.deepcopy(self.BlackKingsPosition)
-      KK = "bKK"
-      Q = "bQ"
-      R = "bR"
-      K = "bK"
-      B = "bB"
-      P = "bP"
-
-
-      # Black Pawn Logic: -> first move 2 squares
-    if (Piece == "bP" and (endLet == (startLet - 2)) and startNum == endNum and (startLet == 6)):
-      # makes sure nothing is in the way of pawn move
-
-      if (self.Board[startLet - 1][startNum] == "--" and self.Board[endLet][endNum] == "--"):
-        return True
-
-      return False
-
-      # White pawn logic
-    if (Piece == "wP" and (endLet == (startLet + 2)) and startNum == endNum and (startLet == 1)):
-      # makes sure nothing is in the way of pawn move
-
-      if (self.Board[startLet + 1][startNum] == "--" and self.Board[endLet][endNum] == "--"):
-        return True
-
-      return False
-
-    # Black Pawn Logic -> any move 1 space up
-    if (Piece == "bP" and endLet == (startLet - 1) and startNum == endNum):
-      # makes sure nothing is in way of pawn space
-      if (self.Board[endLet][endNum] == "--"):
-        return True
-      else:
-        return False
-
-    # White Pawn Logic -> and move 1 space up
-    if (Piece == "wP" and endLet == (startLet + 1) and startNum == endNum):
-      if (self.Board[endLet][endNum] == "--"):
-        return True
-      else:
-        return False
-
-    # White Pawn Kill Logic
-
-    if (Piece == "wP" and (startLet == endLet - 1) and (abs(startNum - endNum) == 1)):
-      slice = self.Board[endLet][endNum]
-      if (slice[0] == "b"):
-        return True
-
-    # Black Pawn Kill Logic
-    if (Piece == "bP" and (startLet == (endLet + 1)) and (abs(startNum - endNum) == 1)):
-      slice = self.Board[endLet][endNum]
-
-      if (slice[0] == "w"):
-        return True
-
-    # Pawn Logic -> En passant
-    # not tested
-    # to do En pasant Logic
-
-    # if(Piece == "bp" and endLet == (startLet-1)):
-
-    # if(startNum == (endNum + 1)):
-    #  if(self.Board[startLet][endNum+1]=="wP"):
-    # handle remove "wP" Right
-    #   return True
-
-    # if(startNum == (endNum -1)):
-    #  if(self.Board[startLet][endNum-1] =="wP"):
-    # handle removal of "wP" Left
-    #   return True
-
-    # start of rook logic
-
-    if (Piece == R):
-
-      if (self.samePiece(endLet, endNum, Piece) == True):
-        return False
-
-      if ((startLet != endLet) and (startNum != endNum)):
-        return False
-
-      # handles up
-      if (startLet > endLet):
-        for x in range(startLet - 1, endLet, -1):
-          if (self.Board[x][endNum] != "--"):
-            return False
-
-        # handles down
-      if (startLet < endLet):
-        for x in range(startLet + 1, endLet, 1):
-          if (self.Board[x][endNum] != "--"):
-            return False
-
-        # handles left
-      if (startNum > endNum):
-        for x in range(startNum - 1, endNum, -1):
-          if (self.Board[endLet][x] != "--"):
-            return False
-
-        # handles right
-      if (startNum < endNum):
-        for x in range(startNum + 1, endNum, 1):
-          if (self.Board[endLet][x] != "--"):
-            return False
-
-      return True
-
-    # Logic for Knight
-
-    if (Piece == K):
-
-      if (self.samePiece(endLet, endNum, Piece) == True):
-        return False
-
-        # 2 up 1 left
-
-      if ((startLet - endLet) >= 0 and (startLet - endLet) <= 7 and (startNum - endNum) >= 0 and (
-              startNum - endNum) <= 7):
-
-        if ((startLet - endLet) == 2 and (startNum - endNum == 1)):
-          return True;
-
-        # 2 Up and 1 Right
-        if ((startLet - endLet) == 2 and (startNum - endNum == -1)):
-          return True
-
-          # 2 left one down
-        if ((startLet - endLet) == -1 and (startNum - endNum == 2)):
-          return True
-
-          # 2 left one up
-        if ((startLet - endLet) == 1 and (startNum - endNum) == 2):
-          return True
-
-        if ((startLet - endLet) == -2 and (startNum - endNum) == 1):
-          return True
-
-        if ((startLet - endLet) == -2 and (startNum - endNum) == -1):
-          return True
-
-          # 2 right 1 down
-        if ((startLet - endLet) == -1 and (startNum - endNum) == -2):
-          return True
-
-        if ((startLet - endLet) == 1 and (startNum - endNum) == -2):
-          return True
-
-      return False
-
-    # Logic for black Bishop
-
-    if (Piece == B):
-      if (self.samePiece(endLet, endNum, Piece) == True):
-        return False
-
-      # Checks to see if this is a diagonal move
-
-      if (abs(startLet - endLet) != abs(startNum - endNum)):
-        return False
-
-        # up and to the left diagonally
-      if ((endLet < startLet) and (startNum > endNum)):
-        LC = 1
-        for x in range(startLet - 1, endLet, -1):
-
-          if (self.Board[x][startNum - LC] != '--' or (startNum - LC < 0)):
-            #    print("your returning false stupidly dd")
-            return False
-          LC = LC + 1
-
-        # up and to the right diagonally
-      if ((endLet < startLet) and (startNum < endNum)):
-        RC = 1
-        for x in range(startLet - 1, endLet, -1):
-
-          if (self.Board[x][startNum + RC] != '--'):
-            #     print("your returning false stupidly dd4")
-            return False
-
-          RC = RC + 1
-
-        # this down and to the left
-      if ((startLet < endLet) and (startNum > endNum)):
-
-        # this used to be = endNum + 1
-        LC = 1
-        for x in range(startLet + 1, endLet, 1):
-          #
-
-          if (self.Board[x][startNum - LC] != '--'):
-            #     print("your returning false stupidly dd")
-            return False
-          LC = LC + 1
-
-        # down and to the right
-      if ((startLet < endLet) and startNum < endNum):
-        RC = 1
-
-        for x in range(startLet + 1, endLet, 1):
-
-          if (self.Board[x][startNum + RC] != '--'):
-            #    print("your returning false stupidly dd7")
-            return False
-          RC = RC + 1
-
-      return True
-
-    if (Piece == Q):
-
-      if (self.samePiece(endLet, endNum, Piece) == True):
-        return False
-
-      # Checks to see if this is a diagonal move
-
-      if (abs(startLet - endLet) == abs(startNum - endNum)):
-
-        # up and to the left diagonally
-        if ((endLet < startLet) and (startNum > endNum)):
-
-          LC = 1
-          for x in range(startLet - 1, endLet, -1):
-
-            if (self.Board[x][startNum - LC] != '--'):
-              #    print("your returning false stupidly dd")
-              return False
-
-            LC = LC + 1
-
-        # up and to the right diagonally
-        if ((endLet < startLet) and (startNum < endNum)):
-
-          RC = 1
-          for x in range(startLet - 1, endLet, -1):
-
-            if (self.Board[x][startNum + RC] != '--'):
-              #     print("your returning false stupidly dd4")
-              return False
-            RC = RC + 1
-
-        # this down and to the left
-        if ((startLet < endLet) and (startNum > endNum)):
-
-          LC = 1
-          for x in range(startLet + 1, endLet, 1):
-
-            if (self.Board[x][startNum - LC] != '--'):
-              #     print("your returning false stupidly dd")
-              return False
-            LC = LC + 1
-
-          # down and to the right
-        if ((startLet < endLet) and startNum < endNum):
-
-          RC = 1
-          for x in range(startLet + 1, endLet, 1):
-
-            if (self.Board[x][startNum + RC] != '--'):
-              #    print("your returning false stupidly dd7")
-              return False
-            RC = RC + 1
-
-        # returns true if valid move
-        return True
-
-      # start of Rook logic but for queen peice
-
-      if ((startLet == endLet) or (startNum == endNum)):
-
-        # Handles Up
-        # handles up
-        if (startLet > endLet):
-          for x in range(startLet - 1, endLet, -1):
-            if (self.Board[x][endNum] != "--"):
-              return False
-
-        # handles down
-        if (startLet < endLet):
-          for x in range(startLet + 1, endLet, 1):
-            if (self.Board[x][endNum] != "--"):
-              return False
-
-        # handles left
-        if (startNum > endNum):
-          for x in range(startNum - 1, endNum, -1):
-            if (self.Board[endLet][x] != "--"):
-              return False
-
-        # handles right
-        if (startNum < endNum):
-          for x in range(startNum + 1, endNum, 1):
-            if (self.Board[endLet][x] != "--"):
-              return False
-
-        return True
-
-        # End of Queen Logic
-      return False
-
-    # start of king logic
-
-    if (Piece == KK):
-
-      if (self.samePiece(endLet, endNum, Piece) == True):
-        return False
-
-      if ((abs(startLet - endLet) == 1 or abs(startLet - endLet) == 0) and (
-              abs(startNum - endNum) == 1 or abs(startNum - endNum) == 0)):
-        print("inside abs")
-        print(str(startLet) + str(startNum) + str(endLet) + str(endNum))
-        return True
-
-      else:
-
-        return False
-
-    # redundent False incase something ever sliped through
-    # which it shouldn't
-    return False
-
+  
 
   def OpposingPiece(self,endLet,endNum,Piece):
 
@@ -907,6 +589,35 @@ class Board:
         elif(kORQB == 1):
           self.Board[endLet][endNum] = "bK" 
 
+
+      # updates black pieces hash map
+      if(Piece[0]=="b"):
+        keyValue = (startLet * 8) + startNum
+        #PieceString = self.BlackPieces.get(keyValue)
+        #handles promotion
+        PieceString = self.Board[endLet][endNum]
+        MoveLocation = (endLet * 8) + endNum
+
+        # Handles captures
+        if(self.WhitePieces.get(MoveLocation)!=None):
+          self.WhitePieces.pop(MoveLocation)
+        
+        self.BlackPieces.update({MoveLocation:PieceString})
+        self.BlackPieces.pop(keyValue)
+
+      # updates white pieces hash map
+      if(Piece[0]=="w"):
+        keyValue = (startLet * 8) + startNum
+        #PieceString = self.WhitePieces.get(keyValue)
+        # handles promotion
+        PieceString = self.Board[endLet][endNum]
+        MoveLocation = (endLet * 8) + endNum
+
+        if(self.BlackPieces.get(MoveLocation)!=None):
+          self.BlackPieces.pop(MoveLocation)
+
+        self.WhitePieces.update({MoveLocation:PieceString})
+        self.WhitePieces.pop(keyValue)
 
       return True
     else:
@@ -1490,59 +1201,6 @@ class Board:
     
 
 
-    # This is just a rehash of the check function but it checks 
-    # for all checks on the kings position
-    # there can never be 3 peices checking the king at one time
-    # there can be 2 peices checking the king at one time
-    # So I'm recording check on king. 
-    # then we have to check every peice on the board to see if it stop
-    # the check, this is going to be very time consuming
-    # if check is unblockable, then checkmate has occured 
-    # and the game is over 
-
-    # check for Opposing King
-
-    # UL
-    if(KingsPiece[0]-1>=0 and KingsPiece[1]-1>=0):
-      if(self.Board[KingsPiece[0]-1][KingsPiece[1]-1]==(Q or B)):
-        OppPeices.append([KingsPiece[0]-1,KingsPiece[1]-1])
-
-    #U
-    if(KingsPiece[0]-1>=0 and KingsPiece[1]>=0):
-      if(self.Board[KingsPiece[0]-1][KingsPiece[1]]==(Q or R)):
-        OppPeices.append([KingsPiece[0]-1,KingsPiece[1]])
-
-    #UR
-    if(KingsPiece[0]-1>=0 and KingsPiece[1]+1<=7):
-      if(self.Board[KingsPiece[0]-1][KingsPiece[1]+1]==(Q or B)):
-        OppPeices.append([KingsPiece[0]-1,KingsPiece[1]+1])
-    
-    #R
-    if(KingsPiece[0]>=0 and KingsPiece[1]+1<=7):
-      if(self.Board[KingsPiece[0]][KingsPiece[1]+1]==(Q or R)):
-        OppPeices.append([KingsPiece[0],KingsPiece[1]+1])
-
-    #LR
-    if(KingsPiece[0]+1<=7 and KingsPiece[1]+1<=7):  
-      if(self.Board[KingsPiece[0]+1][KingsPiece[1]+1]==(Q or B)):
-        OppPeices.append([KingsPiece[0]+1,KingsPiece[1]+1])
-    
-    #D
-    if(KingsPiece[0]+1<=7 and KingsPiece[1]<=7):
-      if(self.Board[KingsPiece[0]+1][KingsPiece[1]]==(Q or R)):
-        OppPeices.append([KingsPiece[0]+1,KingsPiece[1]])
-
-
-    #DL
-    if(KingsPiece[0]+1<=7 and KingsPiece[1]-1>=0):
-      if(self.Board[KingsPiece[0]+1][KingsPiece[1]-1]==(Q or B)):
-        OppPeices.append([KingsPiece[0]+1,KingsPiece[1]-1])
-    
-    #L
-    if(KingsPiece[0]>=0 and KingsPiece[1]-1>=0):
-      if(self.Board[KingsPiece[0]][KingsPiece[1]-1]==(Q or R)):
-        OppPeices.append([KingsPiece[0],KingsPiece[1]-1])
-
 
     #Search for all opponent peices on board that are attacking king
     # 
@@ -1786,12 +1444,12 @@ class Board:
       #print(TestPeice)
     # if you cant block the check return false
     # this signifys a check mate and the game ends
-      if(self.BlockCheck(TestPeice)==False):
+      if(self.BlockCheck(TestPeice)==True):
        
-        return False
+        return True
    
     
-    return True    
+    return False    
 
   def BlockCheck(self,TestPeice):
 
@@ -1865,7 +1523,6 @@ class Board:
       if(self.Check(TestPeice)==True):
 
         
-
         return True
       else: 
         return False
@@ -2063,6 +1720,267 @@ class Board:
      # this return is part of the end, and not part of the pawn test
 
     return False
+
+def CheckReturnPiece(self, ComparePiece ):
+
+  # Location retuns a
+  # of the pieces that can stop a check, form
+  # a specific piece.
+  # this is needed so that, if a peice can 
+  # stop check. But then places the king, in check.
+  # this information is needed to be sent back up
+  # into block check
+  
+    
+  Location = []
+
+
+  if(BoardPrint%2==0):
+    self.WhiteOppPeicesCausingCheck = []
+      
+    KK = "bKK"
+    Q = "bQ"
+    R = "bR"
+    K = "bK"
+    B = "bB"
+    P = "bP"
+    #0print(ColorOfKing[0])
+  if(BoardPrint%2==1):
+    self.BlackOppPeicesCausingCheck = []
+    
+    KK = "wKK"
+    Q = "wQ"
+    R = "wR"
+    K = "wK"
+    B = "wB"
+    P = "wP"
+
+    #print("checking check")
+    # add print statement to all returns
+    # find the error
+    # fix why wQ thinks its in check when its not. 
+    
+    
+
+  if((KingsPiece[0]+2 )<=7 and (KingsPiece[1]-1)>=0 and (KingsPiece[1]-1)<=7 and (KingsPiece[0]+2)>=0):
+       
+    slice = self.Board[KingsPiece[0]+2][KingsPiece[1]-1]
+
+    if(slice==K):
+      Location.append([KingsPiece[0]+2,KingsPiece[1]-1])
+        
+  
+
+
+  if((KingsPiece[0]+2 )<=7 and (KingsPiece[1]+1)>=0 and (KingsPiece[1]+1)<=7 and (KingsPiece[0]+2)>=0):
+      
+    slice = self.Board[KingsPiece[0]+2][KingsPiece[1]+1]
+
+    if(slice==K):
+      Location.append(KingsPiece[0]+2,KingsPiece[1]+1)
+   
+
+
+  if((KingsPiece[0]+1 )>=0 and (KingsPiece[1]+2)<=7 and (KingsPiece[1]+2)>=0 and (KingsPiece[0]+1)<=7):
+        
+    slice = self.Board[KingsPiece[0]+1][KingsPiece[1]+2]  
+    if(slice==K):
+      Location.append([KingsPiece[0]+1,KingsPiece[1]+2])
+        
+   
+
+  
+
+  if((KingsPiece[0]+1 )<=7 and (KingsPiece[1]-2)>=0 and (KingsPiece[1]-2)<=7 and (KingsPiece[0]+1)>=0):
+        
+    slice = self.Board[KingsPiece[0]+1][KingsPiece[1]-2]  
+
+    if(slice==K):
+      Location.append([KingsPiece[0]+1,KingsPiece[1]-2] )
+   
+
+
+
+      
+  if((KingsPiece[0]-2 )>= 0 and (KingsPiece[1]-1)>=0 and (KingsPiece[1]-1)<=7 and (KingsPiece[0]-2)<=7):
+        
+    slice = self.Board[(KingsPiece[0]-2)][(KingsPiece[1]-1)]
+    if(self.Board[KingsPiece[0]-2][KingsPiece[1]-1]==K):
+        
+      Location.append([KingsPiece[0]-2,KingsPiece[1]-1])
+  
+
+
+  if((KingsPiece[0]-2 )>=0 and (KingsPiece[1]+1)<=7 and (KingsPiece[1]+1)>=0 and (KingsPiece[0]-2)<=7):
+        
+    slice = self.Board[KingsPiece[0]-2][KingsPiece[1]+1]
+
+    if(slice==K):
+      Location.append([KingsPiece[0]-2,KingsPiece[1]+1])
+   
+
+
+  if((KingsPiece[0]-1 )<=7 and (KingsPiece[1]+2)<=7 and (KingsPiece[1]+2)>=0 and (KingsPiece[0]-1)>=0):
+
+    slice = self.Board[KingsPiece[0]-1][KingsPiece[1]+2]  
+
+    if(slice==K):
+      Location.append([KingsPiece[0]-1,KingsPiece[1]+2])
+    
+
+      
+  if((KingsPiece[0]-1 )>=0 and (KingsPiece[1]-2)>=0 and (KingsPiece[1]-2)<=7 and (KingsPiece[0]-1)<=7):
+      
+    slice = self.Board[KingsPiece[0]-1][KingsPiece[1]-2]
+
+    if(slice==K):
+      Location.append([KingsPiece[0]-1,KingsPiece[1]-2])
+
+  
+    # might need to switch the 7 to an 8 so that its inclusive
+
+    #print("checking check")
+
+    # searches for rook or queen to the left of king
+  for x in range(KingsPiece[1]-1,-1,-1):
+    if(self.Board[KingsPiece[0]][x]!="--"):
+      if(self.Board[KingsPiece[0]][x]==Q or self.Board[KingsPiece[0]][x]==R):
+          #print("Q 1")
+        Location.append([KingsPiece[0],x])
+        break
+      else:
+        break  
+#7777
+
+    # searches for rook or queen to the right of king
+  for x in range(KingsPiece[1]+1,8,1):
+    if(self.Board[KingsPiece[0]][x]!="--"):
+      if(self.Board[KingsPiece[0]][x]==Q or self.Board[KingsPiece[0]][x]==R):
+          #print("Q 2")
+        Location.append([KingsPiece[0],x])
+        break
+      else:
+        break
+
+
+    # searches for rook or Queen in up position 
+    
+
+  for x in range(KingsPiece[0]-1,0,-1):  
+    if(self.Board[x][KingsPiece[1]]!="--"):
+      if(self.Board[x][KingsPiece[1]]==Q or self.Board[x][KingsPiece[1]]==R):
+         # print("Q 3")
+        Location.append([x,KingsPiece[1]])
+        break
+      else:
+        break 
+
+    # searches for rook or Queen in the down positon
+  for x in range(KingsPiece[0]+1,8,1):
+    if(self.Board[x][KingsPiece[1]]!="--"):
+      if(self.Board[x][KingsPiece[1]]==Q or self.Board[x][KingsPiece[1]]==R):
+          #print("Q 4")
+        Location.append([x,KingsPiece[1]])
+        break
+      else:
+        break 
+
+    # handles Bishop or Queen Checks 
+
+    # handle Bishop up and to the left
+
+  for x in range(1,KingsPiece[0]+1,1):
+    try:
+      if(self.Board[KingsPiece[0]-x][KingsPiece[1]-x]!="--" and (KingsPiece[1]-x)>=0 and (KingsPiece[0]-x>=0)):
+        if(self.Board[KingsPiece[0]-x][KingsPiece[1]-x]==Q or self.Board[KingsPiece[0]-x][KingsPiece[1]-x]==B):
+          
+          Location.append([KingsPiece[0]-x,KingsPiece[1]-x])
+          break
+        else:
+          break
+    except:
+      break
+             
+
+    # handles Bishop up and to the right
+
+
+
+  for x in range(1,KingsPiece[0]+1,1):
+    try:
+      if(self.Board[KingsPiece[0]-x][KingsPiece[1]+x]!="--" and (KingsPiece[1]-x)>=0 and (KingsPiece[0]-x>=0)):
+        if(self.Board[KingsPiece[0]-x][KingsPiece[1]+x]==Q or self.Board[KingsPiece[0]-x][KingsPiece[1]+x]==B):
+            
+          Location.append([KingsPiece[0]-x][KingsPiece[1]+x])
+
+          break
+        else:
+          break
+    except:
+      break 
+       
+        #else:
+         # return False 
+
+    # handles Bishop down and to the Right
+
+  for x in range(KingsPiece[0]+1,8,1):
+    LC = 1
+    try:
+      if(self.Board[x][KingsPiece[1]+LC]!="--" ):
+        if(self.Board[x][KingsPiece[1]+LC]==Q or self.Board[x][KingsPiece[1]+LC]==B):
+          Location.append([x,KingsPiece[1]+LC])
+          break
+        else:
+          break
+      LC = LC + 1
+    except:
+      break
+
+    # handles Bishot down and to the Left
+
+  for x in range(KingsPiece[0]+1,8,1):
+    RC = 1
+    try:
+      if(self.Board[x][KingsPiece[1]-RC]!="--" and KingsPiece[1]):
+        if((self.Board[x][KingsPiece[1]-RC]==Q or self.Board[x][KingsPiece[1]-RC]==B) and KingsPiece[1]-RC >=0):
+            
+          Location.append([x,KingsPiece[1]-RC])
+          break
+        else:
+          break
+      RC = RC + 1
+    except:
+      break
+
+
+    # Check for pawns
+    
+  if(BoardPrint%2==0):
+    if(KingsPiece[0]+1<=7 and KingsPiece[1]+1<=7):
+      if(self.Board[KingsPiece[0]+1][KingsPiece[1]+1]==P):
+        Location.append([KingsPiece[0]+1,KingsPiece[1]+1])
+      
+    if(KingsPiece[0]+1<=7 and KingsPiece[1]-1>=0):
+      if(self.Board[KingsPiece[0]+1][KingsPiece[1]-1]==P):
+        Location.append([KingsPiece[0]+1,KingsPiece[1]-1])
+    
+  if(BoardPrint%2==1):
+    if(KingsPiece[0]-1>=0 and KingsPiece[1]+1<=7):
+      if(self.Board[KingsPiece[0]-1][KingsPiece[1]+1]==P):
+        Location.append([KingsPiece[0]-1,KingsPiece[1]+1])
+      
+    if(KingsPiece[0]-1>=0 and KingsPiece[1]-1>=0):
+      if(self.Board[KingsPiece[0]-1][KingsPiece[1]-1]==P):
+        Location.append([KingsPiece[0]-1,KingsPiece[1]-1])
+
+    # check for Opposing King
+    # Left out I don't think its really needed
+    
+
+
+
+  return Location
 
   def returnBestMove(self):
     # self.ChessBoard = board
