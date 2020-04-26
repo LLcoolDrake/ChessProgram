@@ -100,7 +100,7 @@ class GUI:
     pygame.display.flip()
   def chess_to_screen(self, chess_coord):
       (row, col) = chess_coord
-      x = col * 50
+      x = 12 + col * 50
       y = row * 50
       return (x, y)
   def screen_to_chess(self, screen_coord):
