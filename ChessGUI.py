@@ -18,7 +18,8 @@ class GUI:
 
     self.my_image = pygame.image.load("ChessBoard.png").convert()
     self.screen.blit(self.my_image,(0,0))
-    self.text_message("Click a piece then click where to move it to", 20, 405)
+    self.text_message("You play as black", 125, 405)
+    self.text_message("Click on a piece then click where to move it to", 5, 425)
 
 
   def moveClick(self):
