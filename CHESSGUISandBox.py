@@ -1744,7 +1744,7 @@ def main():
     Chess = Board()
 
     CHESSGUI = ChessGUI.GUI()
-    CHESSGUI.update_screen(Chess)
+    #CHESSGUI.update_screen(Chess)
 
 
     # Call to Chess AIBrain creation. 
