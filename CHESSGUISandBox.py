@@ -1206,7 +1206,7 @@ class Board:
     # 
 
 
-    if((KingsPiece[0]+2 )< 0 and (KingsPiece[1]-1)<0 and (KingsPiece[1]-1)>7 and (KingsPiece[0]+2)>7):
+    if((KingsPiece[0]+2 )<= 7 and (KingsPiece[1]-1)>=0 and (KingsPiece[1]-1)<=7 and (KingsPiece[0]+2)>=0):
        
       slice = self.Board[KingsPiece[0]+2][KingsPiece[1]-1]
 
@@ -1216,7 +1216,7 @@ class Board:
   
 
 
-    if((KingsPiece[0]+2 )< 0 and (KingsPiece[1]+1)<0 and (KingsPiece[1]+1)>7 and (KingsPiece[0]+2)>7):
+    if((KingsPiece[0]+2 )<=7 and (KingsPiece[1]+1)<=7 and (KingsPiece[1]+1)>=0 and (KingsPiece[0]+2)>=0):
       
       slice = self.Board[KingsPiece[0]+2][KingsPiece[1]+1]
 
@@ -1225,7 +1225,7 @@ class Board:
    
 
 
-    if((KingsPiece[0]+1 )< 0 and (KingsPiece[1]+2)<0 and (KingsPiece[1]+2)>7 and (KingsPiece[0]+1)>7):
+    if((KingsPiece[0]+1 )<=7 and (KingsPiece[1]+2)<=7 and (KingsPiece[1]+2)>=0 and (KingsPiece[0]+1)>=0):
         
       slice = self.Board[KingsPiece[0]+1][KingsPiece[1]+2]  
       if(slice==K):
@@ -1235,7 +1235,7 @@ class Board:
 
   
 
-    if((KingsPiece[0]+1 )< 0 and (KingsPiece[1]-2)<0 and (KingsPiece[1]-2)>7 and (KingsPiece[0]+1)>7):
+    if((KingsPiece[0]+1 )<=7 and (KingsPiece[1]-2)<=7 and (KingsPiece[1]-2)>=0 and (KingsPiece[0]+1)>=0):
         
       slice = self.Board[KingsPiece[0]+1][KingsPiece[1]-2]  
 
@@ -1246,7 +1246,7 @@ class Board:
 
 
       
-    if((KingsPiece[0]-2 )< 0 and (KingsPiece[1]-1)<0 and (KingsPiece[1]-1)>7and (KingsPiece[0]-2)>7):
+    if((KingsPiece[0]-2 )<=7 and (KingsPiece[1]-1)<=7 and (KingsPiece[1]-1)>=0 and (KingsPiece[0]-2)>=0):
         
       slice = self.Board[(KingsPiece[0]-2)][(KingsPiece[1]-1)]
       if(self.Board[KingsPiece[0]-2][KingsPiece[1]-1]==K):
@@ -1255,7 +1255,7 @@ class Board:
   
 
 
-    if((KingsPiece[0]-2 )< 0 and (KingsPiece[1]+1)<0 and (KingsPiece[1]+1)>7and (KingsPiece[0]-2)>7):
+    if((KingsPiece[0]-2 )<=7 and (KingsPiece[1]+1)<=7 and (KingsPiece[1]+1)>=0 and (KingsPiece[0]-2)>=0):
         
       slice = self.Board[KingsPiece[0]-2][KingsPiece[1]+1]
 
@@ -1264,7 +1264,7 @@ class Board:
    
 
 
-    if((KingsPiece[0]-1 )< 0 and (KingsPiece[1]+2)<0 and (KingsPiece[1]+2)>7and (KingsPiece[0]-1)>7):
+    if((KingsPiece[0]-1 )<=7 and (KingsPiece[1]+2)<=7 and (KingsPiece[1]+2)>=0and (KingsPiece[0]-1)>=0):
 
       slice = self.Board[KingsPiece[0]-1][KingsPiece[1]+2]  
 
