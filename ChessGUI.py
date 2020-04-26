@@ -1,5 +1,6 @@
 import sys
 import pygame
+import pygame.freetype
 
 
 class GUI:
@@ -10,11 +11,14 @@ class GUI:
 
   def __init__(self):
     pygame.init()
-    self.screen = pygame.display.set_mode((400, 400))
+    self.font = pygame.freetype.SysFont(None, 18)
+    self.screen = pygame.display.set_mode((400, 450))
+    self.screen.fill([255, 255, 255])
     pygame.display.set_caption("CS 205 Chess")
 
     self.my_image = pygame.image.load("ChessBoard.png").convert()
     self.screen.blit(self.my_image,(0,0))
+    self.text_message("Click a piece then click where to move it to", 20, 425)
 
 
   def moveClick(self):
@@ -26,13 +30,6 @@ class GUI:
             move_cords.append(cords[0] // 50)
             move_cords.append(cords[1] // 50)
             print(move_cords)
-        # event = pygame.event.wait()
-        # if event.type == pygame.MOUSEBUTTONDOWN:
-        #     cords = pygame.mouse.get_pos()
-        #     move_cords.append(cords[0] // 50)
-        #     move_cords.append(cords[1] // 50)
-        #     print("hey")
-        #     print(move_cords)
       return move_cords
 
   def update_screen(self, board):
@@ -100,3 +97,8 @@ class GUI:
       row = y/50
       col = x/50
       return (row, col)
+
+  def text_message(self, message, x, y):
+      text_display, rect = self.font.render(message, (0, 0, 0))
+      self.screen.blit(text_display, (x, y))
+      pygame.display.flip()
