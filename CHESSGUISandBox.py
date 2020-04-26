@@ -1,7 +1,6 @@
 import copy
 import random
-import pygame
-from ChessGUI import GUI
+import ChessGUI
 #from AI import AIBrain
 
 class Board:
@@ -2051,7 +2050,7 @@ def main():
     Chess = Board()
 
     CHESSGUI = ChessGUI.GUI()
-    #CHESSGUI.update_screen(Chess)
+    CHESSGUI.update_screen(Chess)
 
 
     # Call to Chess AIBrain creation.
@@ -2088,6 +2087,8 @@ def main():
            # function outputs its clicked ValueError
 
           move = CHESSGUI.moveClick()
+          if move == "exit":
+              break
           userStartNum = move[0]
           userStartLet = move[1]
           print(str(userStartLet) + " " + str(userStartNum))
@@ -2113,7 +2114,6 @@ def main():
 
           # CHESSAI.UpDateBoardData(Chess.Board)
           # Chess.printBoard()
-          WhiteAttemptedAIMove = Chess.returnBestMove()
 
           userStartLet = WhiteAttemptedAIMove[1]
           userEndLet = WhiteAttemptedAIMove[3]

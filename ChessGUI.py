@@ -1,4 +1,3 @@
-import sys
 import pygame
 import pygame.freetype
 
@@ -26,7 +25,10 @@ class GUI:
       move_cords = []
       while len(move_cords) < 4:
         event = pygame.event.wait()
-        if event.type == pygame.MOUSEBUTTONDOWN:
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            move_cords = "exit"
+        elif event.type == pygame.MOUSEBUTTONDOWN:
             cords = pygame.mouse.get_pos()
             move_cords.append(cords[0] // 50)
             move_cords.append(cords[1] // 50)
