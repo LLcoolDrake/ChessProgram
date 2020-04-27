@@ -1,109 +1,95 @@
-import sys
 import pygame
+import pygame.freetype
 
-from chessPieces import ChessPieces
 
 class GUI:
 
 
   GameName = "chess"
+  screen = None
 
-  def __init__(self, board):
+  def __init__(self):
     pygame.init()
-    self.screen = pygame.display.set_mode((400, 400))
+    self.font = pygame.freetype.SysFont(None, 18)
+    self.screen = pygame.display.set_mode((400, 450))
+    self.screen.fill([255, 255, 255])
     pygame.display.set_caption("CS 205 Chess")
 
-    self.chess_pieces = ChessPieces(self)
-    self.board = board
-    my_image = pygame.image.load("ChessBoard.png").convert()
-    self.screen.blit(my_image,(0,0))
+    self.my_image = pygame.image.load("ChessBoard.png").convert()
+    self.screen.blit(self.my_image,(0,0))
+    self.text_message("You play as black", 125, 405)
+    self.text_message("Click on a piece then click where to move it to", 5, 425)
 
 
-  def play_game(self):
-      self.check_events()
-      self.update_screen()
+  def moveClick(self):
+      move_cords = []
+      while len(move_cords) < 4:
+        event = pygame.event.wait()
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            move_cords = "exit"
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            cords = pygame.mouse.get_pos()
+            move_cords.append(cords[0] // 50)
+            move_cords.append(cords[1] // 50)
+            print(move_cords)
+      return move_cords
 
-  # quit with press of q
-  def check_events(self):
-    for event in pygame.event.get():
-      if event.type == pygame.MOUSEBUTTONDOWN:
-          cords = pygame.mouse.get_pos()
-          # cell contains coordinates of last click
-          cell = (cords[0] // 50, cords[1] // 50)
-          print(cell)
-          return cell
-      elif event.type == pygame.QUIT:
-        sys.exit()
-      elif event.type == pygame.KEYDOWN:
-        if event.key == pygame.K_q:
-          sys.exit()
+  def update_screen(self, board):
+    self.screen.blit(self.my_image, (0, 0))
 
-
-  def update_screen(self):
     for row in range(8):
         for col in range(8):
-            if self.board.Board[row][col] == "wP":
+            if board.Board[row][col] == "wP":
                 (x, y) = self.chess_to_screen((row, col))
-                self.chess_pieces.pieces[0].x = x
-                self.chess_pieces.pieces[0].y = y
-                self.chess_pieces.pieces[0].draw_piece()
-            elif self.board.Board[row][col] == "wR":
+                img = pygame.image.load("whitePawn.png")
+                self.screen.blit(img, (x, y))
+            elif board.Board[row][col] == "wR":
                 (x, y) = self.chess_to_screen((row, col))
-                self.chess_pieces.pieces[1].x = x
-                self.chess_pieces.pieces[1].y = y
-                self.chess_pieces.pieces[1].draw_piece()
-            elif self.board.Board[row][col] == "wK":
+                img = pygame.image.load("whiteRook.png")
+                self.screen.blit(img, (x, y))
+            elif board.Board[row][col] == "wK":
                 (x, y) = self.chess_to_screen((row, col))
-                self.chess_pieces.pieces[2].x = x
-                self.chess_pieces.pieces[2].y = y
-                self.chess_pieces.pieces[2].draw_piece()
-            elif self.board.Board[row][col] == "wB":
+                img = pygame.image.load("whiteKnight.png")
+                self.screen.blit(img, (x, y))
+            elif board.Board[row][col] == "wB":
                 (x, y) = self.chess_to_screen((row, col))
-                self.chess_pieces.pieces[3].x = x
-                self.chess_pieces.pieces[3].y = y
-                self.chess_pieces.pieces[3].draw_piece()
-            elif self.board.Board[row][col] == "wQ":
+                img = pygame.image.load("whiteBishop.png")
+                self.screen.blit(img, (x, y))
+            elif board.Board[row][col] == "wQ":
                 (x, y) = self.chess_to_screen((row, col))
-                self.chess_pieces.pieces[4].x = x
-                self.chess_pieces.pieces[4].y = y
-                self.chess_pieces.pieces[4].draw_piece()
-            elif self.board.Board[row][col] == "wKK":
+                img = pygame.image.load("whiteQueen.png")
+                self.screen.blit(img, (x, y))
+            elif board.Board[row][col] == "wKK":
                 (x, y) = self.chess_to_screen((row, col))
-                self.chess_pieces.pieces[5].x = x
-                self.chess_pieces.pieces[5].y = y
-                self.chess_pieces.pieces[5].draw_piece()
-            elif self.board.Board[row][col] == "bP":
+                img = pygame.image.load("whiteKing.png")
+                self.screen.blit(img, (x, y))
+            elif board.Board[row][col] == "bP":
                 (x, y) = self.chess_to_screen((row, col))
-                self.chess_pieces.pieces[6].x = x
-                self.chess_pieces.pieces[6].y = y
-                self.chess_pieces.pieces[6].draw_piece()
-            elif self.board.Board[row][col] == "bR":
+                img = pygame.image.load("blackPawn.png")
+                self.screen.blit(img, (x, y))
+            elif board.Board[row][col] == "bR":
                 (x, y) = self.chess_to_screen((row, col))
-                self.chess_pieces.pieces[7].x = x
-                self.chess_pieces.pieces[7].y = y
-                self.chess_pieces.pieces[7].draw_piece()
-            elif self.board.Board[row][col] == "bK":
+                img = pygame.image.load("blackRook.png")
+                self.screen.blit(img, (x, y))
+            elif board.Board[row][col] == "bK":
                 (x, y) = self.chess_to_screen((row, col))
-                self.chess_pieces.pieces[8].x = x
-                self.chess_pieces.pieces[8].y = y
-                self.chess_pieces.pieces[8].draw_piece()
-            elif self.board.Board[row][col] == "bB":
+                img = pygame.image.load("blackKnight.png")
+                self.screen.blit(img, (x, y))
+            elif board.Board[row][col] == "bB":
                 (x, y) = self.chess_to_screen((row, col))
-                self.chess_pieces.pieces[9].x = x
-                self.chess_pieces.pieces[9].y = y
-                self.chess_pieces.pieces[9].draw_piece()
-            elif self.board.Board[row][col] == "bQ":
+                img = pygame.image.load("blackBishop.png")
+                self.screen.blit(img, (x, y))
+            elif board.Board[row][col] == "bQ":
                 (x, y) = self.chess_to_screen((row, col))
-                self.chess_pieces.pieces[10].x = x
-                self.chess_pieces.pieces[10].y = y
-                self.chess_pieces.pieces[10].draw_piece()
-            elif self.board.Board[row][col] == "bKK":
+                img = pygame.image.load("blackQueen.png")
+                self.screen.blit(img, (x, y))
+            elif board.Board[row][col] == "bKK":
                 (x, y) = self.chess_to_screen((row, col))
-                self.chess_pieces.pieces[11].x = x
-                self.chess_pieces.pieces[11].y = y
-                self.chess_pieces.pieces[11].draw_piece()
+                img = pygame.image.load("blackKing.png")
+                self.screen.blit(img, (x, y))
 
-    pygame.display.flip()
+        pygame.display.update()
   def chess_to_screen(self, chess_coord):
       (row, col) = chess_coord
       x = 12 + col * 50
@@ -114,3 +100,8 @@ class GUI:
       row = y/50
       col = x/50
       return (row, col)
+
+  def text_message(self, message, x, y):
+      text_display, rect = self.font.render(message, (0, 0, 0))
+      self.screen.blit(text_display, (x, y))
+      pygame.display.flip()
