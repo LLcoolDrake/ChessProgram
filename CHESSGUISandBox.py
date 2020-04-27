@@ -2581,7 +2581,7 @@ def main():
     CheckMate = False 
     Chess = Board()
 
-    CHESSGUI = ChessGUI.GUI()
+    CHESSGUI = GUI()
     CHESSGUI.update_screen(Chess)
 
 
