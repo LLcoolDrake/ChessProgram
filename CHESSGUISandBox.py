@@ -2115,6 +2115,8 @@ def main():
           # CHESSAI.UpDateBoardData(Chess.Board)
           # Chess.printBoard()
 
+          WhiteAttemptedAIMove = Chess.returnBestMove()
+
           userStartLet = WhiteAttemptedAIMove[1]
           userEndLet = WhiteAttemptedAIMove[3]
           userStartNum = WhiteAttemptedAIMove[2]
@@ -2124,7 +2126,7 @@ def main():
           # userStartNum = random.randint(0, 7)
           # userEndLet = random.randint(0, 7)
           # userEndNum = random.randint(0, 7)
-          #print(str(userStartLet) + " " +str(userStartNum) + " "+str(userEndLet) + " " + str(userEndNum))
+          # print(str(userStartLet) + " " +str(userStartNum) + " "+str(userEndLet) + " " + str(userEndNum))
         
         
         
@@ -2157,7 +2159,7 @@ def main():
         else:
           raise Exception("Not legal move try again")
         #userwait = input("press enter for next move")
-   
+
       except:
         
         MoveCounter = MoveCounter - 1
