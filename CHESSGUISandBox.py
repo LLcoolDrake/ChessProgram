@@ -1888,6 +1888,9 @@ class Board:
     
     return False    
 
+  
+
+    
   def BlockCheck(self,TestPeice):
 
     # WARNING: Can cause system problems
@@ -1967,7 +1970,6 @@ class Board:
       else: 
         return False
     
-    
     if(OppPeiceType == "R"):
 
       # to the left
@@ -2014,267 +2016,14 @@ class Board:
           return False
 
       
-      return False  
-     
-
-
-    # test Bishops type piece 
-    if(OppPeiceType == "B"):
-
-      if(KingsPiece[0]>TestPeice[0]):
-        # bishop up and to the right
-        HorizontalTracking = KingsPiece[1]
-
-        if(KingsPiece[1]<TestPeice[1]):
-
-          HorizontalTracking = HorizontalTracking + 1
-
-          for x in range(KingsPiece[0]-1,TestPeice[0]-1,-1):
-
-            if(HorizontalTracking > 7):
-              return False
-            if(self.RevCheck([x,HorizontalTracking])):
-              return True
-            HorizontalTracking = HorizontalTracking + 1
-          return False
-          
-        # bishop up and to the left  
-        HorizontalTracking = KingsPiece[1]
-
-        if(KingsPiece[1]>TestPeice[1]):
-          
-          HorizontalTracking = HorizontalTrakcing - 1
-
-          for x in range(KingsPiece[0]-1,TestPeice[0]-1,-1):
-
-            if(HorizontalTracking<0):
-              return False
-            
-            if(self.RevCheck([x,HorizontalTracking])):
-             
-              return True
-            
-            HorizontalTracking = HorizontalTracking - 1
-          return False
-
-      # Bishop logic down and to the left
-
-      
-
-      if(KingsPiece[0]<TestPeice[0]):
-        
-        # down and to the left 
-        HorizontalTracking = KingsPiece[1]
-
-        if(KingsPiece[1]>TestPeice[1]):
-          HorizontalTracking = HorizontalTracking - 1
-
-          for x in range(KingsPiece[0]+1,TestPeice[1]+1,1):
-            
-            if(HorizontalTracking<0):
-              return False
-
-            if(self.RevCheck([x,HorizontalTracking])):
-              return True
-            HorizontalTracking = HorizontalTracking -1
-          return False
-
-        # down and to the right 
-        HorizontalTracking = KingsPiece[1]
-
-        if(KingsPiece[1]<TestPeice[1]):
-          HorizontalTracking = HorizontalTracking + 1
-          if(HorizontalTracking>7):
-            return False
-
-          for x in range(KingsPiece[0]+1,TestPeice[0]+1,1):
-            if(self.RevCheck([x,HorizontalTracking])):
-          
-              return True
-            HorizontalTracking = HorizontalTracking + 1
-          
-          return False
-      
       return False 
-
-    if(OppPeiceType == "Q"):
-      #bishop logic for check block
-
-      # ***
-      
-
-      if(KingsPiece[0]>TestPeice[0]):
-        # bishop up and to the right
-
-        HorizontalTracker = KingsPiece[1]
-        if(KingsPiece[1]<TestPeice[1]):
-          
-          HorizontalTracker = HorizontalTracker + 1
-          for x in range(KingsPiece[0]-1,TestPeice[1]-1,-1):
-
-            if(HorizontalTracker>7):
-              return False
-            if(self.RevCheck([x,HorizontalTracker])):
-              return True
-            HorizontalTracker = HorizontalTracker + 1
-          return False
-          
-        # bishop up and to the left   
-        HorizontalTracker = KingsPiece[1]
-        if(KingsPiece[1]>TestPeice[1]):
-          
-          HorizontalTracker = HorizontalTracker - 1
-          if(HorizontalTracker<0):
-            return False
-
-          for x in range(KingsPiece[0]-1,TestPeice[0]-1,-1):
-            if(self.RevCheck([x,HorizontalTracker])):
-              return True
-            HorizontalTracker = HorizontalTracker - 1
-          return False
-
-      # Bishop logic down and to the left
-
-      HorizontalTracker = KingsPiece[1]
-      if(KingsPiece[0]<TestPeice[0]):
-        
-        if(KingsPiece[1]>TestPeice[1]):
-          HorizontalTracker = HorizontalTracker - 1
-          if(HorizontalTracker <0):
-            return False
-          for x in range(KingsPiece[0]+1,TestPeice[0]+1,1):
-            if(self.RevCheck([x,HorizontalTracker])):
-              return True
-            HorizontalTracker = HorizontalTracker - 1
-          return False
-
-        # down and to the right
-        HorizontalTracker = KingsPiece[1]
-        if(KingsPiece[1]<TestPeice[1]):
-          HorizontalTracker = HorizontalTracker + 1
-          if(HorizontalTracker>7):
-            return False
-          for x in range(KingsPiece[0]+1,TestPeice[1]+1,1):
-            if(self.RevCheck([x,HorizontalTracker])):
-              return True
-            return False
+    
+    
 
 
 
-      #rook logic for check block
-      # to the left
-      if(KingsPiece[0]==TestPeice[0]):
-        if(KingsPiece[1]>TestPeice[1]):
 
-          
-          for x in range(KingsPiece[1]-1,TestPiece[1]-1,-1):
-
-            # bounds check
-            if(x<0):
-              return False
-
-            if(self.RevCheck([KingsPiece[0],x])==True):
-              return True  
-          return False
-
-        # to the right 
-        if(KingsPiece[0]<TestPeice[0]):
-          for x in range(KingsPiece[1]+1,TestPeice[1]+1,1):
-            if(self.RevCheck([KingsPiece[0],x])==True):
-              return True  
-          return False
-
-
-      # tests up and down for rook
-      if(KingsPiece[1]==TestPeice[1]):
-
-        # tests up
-        if(KingsPiece[0]>TestPeice[0]):
-          for x in range(KingsPiece[0]-1,TestPeice[0]-1,-1):
-
-            if(x<0):
-              return False
-            if(self.RevCheck([x,KingsPiece[1]])==True):
-              return True  
-          return False
-
-        # tests down
-        if(KingsPiece[0]<TestPeice[0]):
-          for x in range(KingsPiece[0]+1,TestPeice[0]+1,1):
-            if(self.RevCheck([x,KingsPiece[1]])==True):
-              return True  
-          return False
-
-      
-      return False    
-	
-	
-
-
-    if(OppPeiceString == "bP"):
-
-
-      if(self.RevCheck(TestPeice)==True):
-        return True
-      else:
-        return False
-      
-      
-      #try:
-       # TestRight = TestPeice[TestPeice[0]-1][TestPeice[1]+1]
-       # if(self.RevCheck(TestRight)==True):
-       #   return True
-       # else: 
-       #   return False
-      #except:
-       # return False
-
-      #try:
-
-      #  TestLeft = TestPeice[TestPeice[0]-1][TestPeice[1]-1]
-       # if(self.RevCheck(TestLeft)==True):
-       #   return True
-       # else: 
-       #   return False
-      #except:
-       # return False
-
-    if(OppPeiceString == "wP"):
-
-      print("wP test ")
-      if(self.RevCheck(TestPeice)==True):
-        print("wp was true")
-        return True
-      else:
-        False
-
-      #try:
-       # TestRight = TestPeice[TestPeice[0]+1][TestPeice[1]+1]
-      #  if(self.RevCheck(TestRight)==True):
-      #    return True
-      #  else: 
-      #    return False
-     # except:
-     #   return False
-
-     # try:
-      #  TestLeft = TestPeice[TestPeice[0]+1][TestPeice[1]-1]
-      #  if(self.RevCheck(TestLeft)==True):
-      #    return True
-      #  else: 
-      #    return False
-    #  except:
-    #    return False
-
-
-    # this could never happen
-    #if(OppPeiceType == "KK"):
-     # return
-
-     # this return is part of the end, and not part of the pawn test
-
-    return False 
-	
+    
   
    
 
