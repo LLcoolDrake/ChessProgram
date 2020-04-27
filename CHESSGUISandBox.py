@@ -2565,6 +2565,361 @@ class Board:
     return bestMove
  
 
+  def isValidMove2(self,Piece,startLet,endLet,startNum,endNum):
+  
+    #print(Piece)
+    if(BoardPrint%2==1):
+      KingsPosition = copy.deepcopy(self.WhiteKingsPosition)
+      KK = "wKK"
+      Q = "wQ"
+      R = "wR"
+      K = "wK"
+      B = "wB"
+      P = "wP"
+
+    if(BoardPrint%2==0):
+      KingsPosition = copy.deepcopy(self.BlackKingsPosition)
+      KK = "bKK"
+      Q = "bQ"
+      R = "bR"
+      K = "bK"
+      B = "bB"
+      P = "bP"
+
+ 
+      
+      #Black Pawn Logic: -> first move 2 squares
+    if(Piece == "bP" and (endLet == (startLet - 2)) and startNum == endNum and (startLet == 6)):
+        # makes sure nothing is in the way of pawn move
+
+        
+      if(self.Board[startLet-1][startNum]=="--" and self.Board[endLet][endNum]=="--"):
+        return True
+      
+      return False
+
+      # White pawn logic
+    if(Piece == "wP" and (endLet == (startLet + 2)) and startNum == endNum and (startLet == 1)):
+        # makes sure nothing is in the way of pawn move
+
+        
+      if(self.Board[startLet+1][startNum]=="--" and self.Board[endLet][endNum]=="--"):
+        return True
+      
+      return False
+
+    # Black Pawn Logic -> any move 1 space up
+    if(Piece == "bP" and endLet == (startLet-1) and startNum == endNum):
+        # makes sure nothing is in way of pawn space
+        if(self.Board[endLet][endNum]=="--"):
+          return True
+        else:
+          return False
+
+
+    # White Pawn Logic -> and move 1 space up
+    if(Piece == "wP" and endLet == (startLet+1) and startNum == endNum):
+      if(self.Board[endLet][endNum]=="--"):
+          return True
+      else:
+        return False
+
+    #White Pawn Kill Logic 
+
+    if(Piece == "wP" and (startLet == endLet-1) and (abs(startNum-endNum)==1)):
+      slice = self.Board[endLet][endNum]
+      if(slice[0]=="b"):
+        return True
+
+    #Black Pawn Kill Logic
+    if(Piece == "bP" and (startLet == (endLet+1)) and (abs(startNum-endNum) == 1)):
+      slice = self.Board[endLet][endNum]
+     
+      if(slice[0]=="w"):
+        return True
+
+
+    # Pawn Logic -> En passant
+    #not tested
+    # to do En pasant Logic 
+
+    #if(Piece == "bp" and endLet == (startLet-1)):
+      
+     # if(startNum == (endNum + 1)):
+      #  if(self.Board[startLet][endNum+1]=="wP"):
+          # handle remove "wP" Right
+       #   return True
+
+     # if(startNum == (endNum -1)):
+      #  if(self.Board[startLet][endNum-1] =="wP"):
+          #handle removal of "wP" Left
+       #   return True
+      
+
+    # start of rook logic
+
+    if(Piece == R ):
+
+      
+      if(self.samePiece(endLet,endNum,Piece)==True):
+        return False
+ 
+      if((startLet != endLet) and (startNum != endNum)):
+        return False
+   
+      # handles up
+      if(startLet>endLet):
+        for x in range(startLet-1,endLet,-1):
+          if(self.Board[x][endNum]!="--"):
+            return False
+
+        # handles down  
+      if(startLet<endLet):
+        for x in range(startLet+1,endLet,1):
+          if(self.Board[x][endNum]!="--"):
+            return False
+
+        # handles left    
+      if(startNum>endNum):
+        for x in range(startNum-1,endNum,-1):
+          if(self.Board[endLet][x]!="--"):
+            return False
+
+        # handles right    
+      if(startNum<endNum):
+        for x in range(startNum+1,endNum,1):
+          if(self.Board[endLet][x]!="--"):
+            return False
+
+      return True
+
+    # Logic for Knight
+
+    if(Piece == K):
+
+      print("kkk")
+
+      if(self.samePiece(endLet,endNum,Piece)==True):
+        return False
+                
+        # 2 up 1 left
+      print("yyy")
+      if((endLet)>=0 and (endLet)<= 7 and (endNum)>=0 and (endNum)<=7):
+
+
+        
+          
+        if((startLet-endLet) == 2 and (startNum-endNum==1)):
+          return True;
+
+        # 2 Up and 1 Right
+        if((startLet-endLet)==2 and (startNum-endNum==-1)):  
+          print("ttt")
+          return True
+
+          # 2 left one down
+        if((startLet-endLet)==-1 and (startNum-endNum==2)):
+          return True
+
+          # 2 left one up
+        if((startLet-endLet)==1 and (startNum-endNum)==2 ):
+          return True
+
+        if((startLet-endLet)==-2 and (startNum-endNum)==1 ):
+          return True
+        
+        if((startLet-endLet)==-2 and (startNum-endNum)==-1 ):
+          return True
+
+          # 2 right 1 down
+        if((startLet-endLet)==-1 and (startNum-endNum)==-2 ):
+          return True
+
+        if((startLet-endLet)==1 and (startNum-endNum)==-2 ):
+          return True      
+    
+      return False
+      
+   
+    #Logic for black Bishop
+
+    if(Piece == B ):     
+      if(self.samePiece(endLet,endNum,Piece)==True):
+        return False
+
+      # Checks to see if this is a diagonal move
+
+      if(abs(startLet-endLet) != abs(startNum-endNum)):
+      
+        return False
+    
+        # up and to the left diagonally
+      if((endLet < startLet) and (startNum > endNum)) :
+        LC = 1
+        for x in range(startLet-1,endLet,-1):
+       
+          if(self.Board[x][startNum-LC]!='--' or (startNum-LC <0)):
+          #    print("your returning false stupidly dd")
+            return False
+          LC = LC + 1
+        
+        # up and to the right diagonally
+      if((endLet < startLet) and (startNum < endNum)) :
+        RC = 1
+        for x in range(startLet-1,endLet,-1):
+      
+          if(self.Board[x][startNum+RC]!='--' ):
+         #     print("your returning false stupidly dd4")
+            return False
+          
+          RC = RC + 1
+
+
+        # this down and to the left
+      if((startLet < endLet) and (startNum > endNum)):
+          
+          # this used to be = endNum + 1
+        LC = 1
+        for x in range(startLet+1,endLet,1):
+        #   
+
+          if(self.Board[x][startNum-LC]!='--' ):
+         #     print("your returning false stupidly dd")
+            return False
+          LC = LC + 1
+
+
+        # down and to the right
+      if((startLet < endLet) and startNum < endNum):
+        RC = 1
+        
+        for x in range(startLet+1,endLet,1):
+      
+          if(self.Board[x][startNum+RC]!='--' ):
+          #    print("your returning false stupidly dd7")
+            return False
+          RC = RC + 1
+
+      return True
+       
+
+    if(Piece==Q):
+
+      if(self.samePiece(endLet,endNum,Piece)==True):
+        return False
+
+      # Checks to see if this is a diagonal move
+
+      if(abs(startLet-endLet) == abs(startNum-endNum)):
+
+
+          # up and to the left diagonally
+        if((endLet < startLet) and (startNum > endNum)) :
+          
+          LC = 1
+          for x in range(startLet-1,endLet,-1):
+       
+            if(self.Board[x][startNum-LC]!='--' ):
+          #    print("your returning false stupidly dd")
+              return False
+            
+            LC = LC  + 1
+        
+        # up and to the right diagonally
+        if((endLet < startLet) and (startNum < endNum)) :
+          
+          RC = 1
+          for x in range(startLet-1,endLet,-1):
+      
+            if(self.Board[x][startNum+RC]!='--' ):
+         #     print("your returning false stupidly dd4")
+              return False
+            RC = RC + 1
+
+
+        # this down and to the left
+        if((startLet < endLet) and (startNum > endNum)):
+          
+          LC = 1 
+          for x in range(startLet+1,endLet,1):
+        
+            if(self.Board[x][startNum-LC]!='--' ):
+         #     print("your returning false stupidly dd")
+              return False
+            LC = LC + 1
+
+
+          # down and to the right
+        if((startLet < endLet) and startNum < endNum):
+          
+          RC = 1
+          for x in range(startLet+1,endLet,1):
+      
+            if(self.Board[x][startNum+RC]!='--' ):
+          #    print("your returning false stupidly dd7")
+              return False
+            RC = RC + 1
+
+      
+        # returns true if valid move
+        return True
+        
+      # start of Rook logic but for queen peice 
+
+      if((startLet == endLet) or (startNum == endNum)):
+          
+        # Handles Up
+        # handles up
+        if(startLet>endLet):
+          for x in range(startLet-1,endLet,-1):
+            if(self.Board[x][endNum]!="--"):
+              return False
+
+        # handles down  
+        if(startLet<endLet):
+          for x in range(startLet+1,endLet,1):
+            if(self.Board[x][endNum]!="--"):
+              return False
+
+        # handles left    
+        if(startNum>endNum):
+          for x in range(startNum-1,endNum,-1):
+            if(self.Board[endLet][x]!="--"):
+              return False
+
+        # handles right    
+        if(startNum<endNum):
+          for x in range(startNum+1,endNum,1):
+            if(self.Board[endLet][x]!="--"):
+              return False
+
+        return True
+        
+        # End of Queen Logic
+      return False
+           
+
+    # start of king logic 
+ 
+    if(Piece == KK):
+
+      if(self.samePiece(endLet,endNum,Piece)==True):
+        return False
+
+      if((abs(startLet-endLet)==1 or abs(startLet-endLet)==0 )  and (abs(startNum-endNum)==1 or abs(startNum-endNum)==0)):
+        print("inside abs")
+        print(str(startLet) + str(startNum) + str(endLet) + str(endNum))
+        return True
+        
+      else:  
+        
+        return False
+   
+    
+
+    # redundent False incase something ever sliped through
+    # which it shouldn't
+    return False
 
 
 
