@@ -2162,34 +2162,54 @@ class Board:
 
 
       #rook logic for check block
+      # to the left
       if(KingsPiece[0]==TestPeice[0]):
         if(KingsPiece[1]>TestPeice[1]):
-          for x in range(TestPeice[1]+1,KingsPiece[1],1):
+
+          
+          for x in range(KingsPiece[1]-1,TestPiece[1]-1,-1):
+
+            # bounds check
+            if(x<0):
+              return False
+
             if(self.RevCheck([KingsPiece[0],x])==True):
               return True  
           return False
 
-        if(KingsPiece[1]<TestPeice[1]):
-          for x in range(KingsPiece[1]+1,TestPeice[1],1):
+        # to the right 
+        if(KingsPiece[0]<TestPeice[0]):
+          for x in range(KingsPiece[1]+1,TestPeice[1]+1,1):
             if(self.RevCheck([KingsPiece[0],x])==True):
               return True  
           return False
 
+
+      # tests up and down for rook
       if(KingsPiece[1]==TestPeice[1]):
+
+        # tests up
         if(KingsPiece[0]>TestPeice[0]):
-          for x in range(TestPeice[1]+1,KingsPiece[1],1):
-            if(self.RevCheck([x,KingsPiece[0]])==True):
+          for x in range(KingsPiece[0]-1,TestPeice[0]-1,-1):
+
+            if(x<0):
+              return False
+            if(self.RevCheck([x,KingsPiece[1]])==True):
               return True  
           return False
 
-        if(KingsPiece[1]<TestPeice[1]):
-          for x in range(KingsPiece[0]+1,TestPeice[0],1):
-            if(self.RevCheck([x,KingsPiece[0]])==True):
+        # tests down
+        if(KingsPiece[0]<TestPeice[0]):
+          for x in range(KingsPiece[0]+1,TestPeice[0]+1,1):
+            if(self.RevCheck([x,KingsPiece[1]])==True):
               return True  
           return False
 
       
-        return False
+      return False    
+	
+	
+
 
     if(OppPeiceString == "bP"):
 
