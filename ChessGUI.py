@@ -11,7 +11,7 @@ class GUI:
   def __init__(self):
     pygame.init()
     self.font = pygame.freetype.SysFont(None, 18)
-    self.screen = pygame.display.set_mode((400, 450))
+    self.screen = pygame.display.set_mode((400, 465))
     self.screen.fill([255, 255, 255])
     pygame.display.set_caption("CS 205 Chess")
 
