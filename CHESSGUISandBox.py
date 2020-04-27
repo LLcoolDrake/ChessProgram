@@ -1967,6 +1967,7 @@ class Board:
       else: 
         return False
     
+    
     if(OppPeiceType == "R"):
 
       # to the left
@@ -1985,7 +1986,7 @@ class Board:
           return False
 
         # to the right 
-        if(KingsPiece[1]<TestPeice[1]):
+        if(KingsPiece[0]<TestPeice[0]):
           for x in range(KingsPiece[1]+1,TestPeice[1]+1,1):
             if(self.RevCheck([KingsPiece[0],x])==True):
               return True  
@@ -1997,7 +1998,7 @@ class Board:
 
         # tests up
         if(KingsPiece[0]>TestPeice[0]):
-          for x in range(KingsPeice[1]-1,testPiece[1]-1,-1):
+          for x in range(KingsPiece[0]-1,TestPeice[0]-1,-1):
 
             if(x<0):
               return False
@@ -2013,7 +2014,8 @@ class Board:
           return False
 
       
-      return False
+      return False  
+     
 
 
     # test Bishops type piece 
