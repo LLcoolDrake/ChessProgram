@@ -1,7 +1,6 @@
 # CS 205 Final Project Group 7: Jacob Drake, Nick Laware, Ethan Bokelberg, Jake Regele  
-For sprint 1, we have the logic for playing chess functioning by running the ChessRandomAIWorking.py, displaying a board printed to the terminal, playing
-against the computer by having the computer select random valid moves on its turn.
-tkinter_test.py is the beginnings of our more sophisticated GUI, not finished implementation yet.  
+For sprint 2, the main() to run is in CHESSGUISandBox.py. It calls the ChessGUI to create a GUI object, and uses that to run the games. Comments about the 
+GUI class are below. 
 # GUI Implemention comments  
 Using PyGame, the board is an image, loaded in during the init. The sprites for the pieces are also all saved as individual png files. 
 To display them, the update_screen function loops through the board from the Board class, and compares the value in each cell. If it matches a piece, 
