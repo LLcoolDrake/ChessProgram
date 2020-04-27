@@ -1,6 +1,5 @@
 import copy
 import random
-
 import ChessGUI
 #from AI import AIBrain
 
@@ -2168,28 +2167,28 @@ def main():
 
            #GUI team this is where your gui.moveclick
            # function outputs its clicked ValueError
-          # userStartLet = random.randint(0, 7)
-          # userStartNum = random.randint(0, 7)
-          # userEndLet = random.randint(0, 7)
-          # userEndNum = random.randint(0, 7)
+          userStartLet = random.randint(0, 7)
+          userStartNum = random.randint(0, 7)
+          userEndLet = random.randint(0, 7)
+          userEndNum = random.randint(0, 7)
 
 
-          userStartLet = int(input("enter start Let (vertical column): "))
-          userStartNum  = int(input("enter start num (horizontal column): "))
-          userEndLet  = int(input("enter end Let (vertical column: "))
-          userEndNum  = int(input("enter end Num (horizontal column): "))
+          # userStartLet = int(input("enter start Let (vertical column): "))
+          # userStartNum  = int(input("enter start num (horizontal column): "))
+          # userEndLet  = int(input("enter end Let (vertical column: "))
+          # userEndNum  = int(input("enter end Num (horizontal column): "))
            # function outputs its clicked ValueError
           # keeps repeating this call
-          cell = CHESSGUI.check_events()
-          userStartLet = cell[0]
-          print(userStartLet)
-          userStartNum = cell[1]
-          print(userStartNum)
-          # never gets past here
-          cell = CHESSGUI.check_events()
-          userEndLet = cell[0]
-          userEndNum = cell[1]
-          print (userEndLet + " " + userEndNum)
+          # cell = CHESSGUI.check_events()
+          # userStartLet = cell[0]
+          # print(userStartLet)
+          # userStartNum = cell[1]
+          # print(userStartNum)
+          # # never gets past here
+          # cell = CHESSGUI.check_events()
+          # userEndLet = cell[0]
+          # userEndNum = cell[1]
+          # print (userEndLet + " " + userEndNum)
 
 
           #userStartLet = int(input("enter start Let (vertical column): "))
@@ -2206,9 +2205,8 @@ def main():
           # HELPFUL CAPS LOCK: THIS IS WHERE AI GETS CALLED
 
           # CHESSAI.UpDateBoardData(Chess.Board)
-          # Chess.printBoard()
+          Chess.printBoard()
           WhiteAttemptedAIMove = Chess.returnBestMove()
-
           userStartLet = WhiteAttemptedAIMove[1]
           userEndLet = WhiteAttemptedAIMove[3]
           userStartNum = WhiteAttemptedAIMove[2]
