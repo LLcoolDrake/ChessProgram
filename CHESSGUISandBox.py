@@ -2568,7 +2568,7 @@ class Board:
   def isValidMove2(self,Piece,startLet,endLet,startNum,endNum):
   
     #print(Piece)
-    if(BoardPrint%2==1):
+    if Piece[0] == 'w':
       KingsPosition = copy.deepcopy(self.WhiteKingsPosition)
       KK = "wKK"
       Q = "wQ"
@@ -2577,7 +2577,7 @@ class Board:
       B = "wB"
       P = "wP"
 
-    if(BoardPrint%2==0):
+    if Piece[0] == 'b':
       KingsPosition = copy.deepcopy(self.BlackKingsPosition)
       KK = "bKK"
       Q = "bQ"
