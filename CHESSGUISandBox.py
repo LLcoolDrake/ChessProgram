@@ -1888,8 +1888,6 @@ class Board:
     
     return False    
 
-  
-
   def BlockCheck(self,TestPeice):
 
     # WARNING: Can cause system problems
@@ -2105,37 +2103,57 @@ class Board:
 
       if(KingsPiece[0]>TestPeice[0]):
         # bishop up and to the right
+
+        HorizontalTracker = KingsPiece[1]
         if(KingsPiece[1]<TestPeice[1]):
-          counter = 1
-          for x in range(KingsPiece[1]+1,TestPeice[1],1):
-            if(self.RevCheck([(KingsPiece[0]-counter),x])):
+          
+          HorizontalTracker = HorizontalTracker + 1
+          for x in range(KingsPiece[0]-1,TestPeice[1]-1,-1):
+
+            if(HorizontalTracker>7):
+              return False
+            if(self.RevCheck([x,HorizontalTracker])):
               return True
-            counter = counter + 1
+            HorizontalTracker = HorizontalTracker + 1
           return False
           
         # bishop up and to the left   
+        HorizontalTracker = KingsPiece[1]
         if(KingsPiece[1]>TestPeice[1]):
-          counter = 1
-          for x in range(KingsPiece[1]-1,TestPeice[1],-1):
-            if(self.RevCheck([(KingsPiece[0]-counter),x])):
+          
+          HorizontalTracker = HorizontalTracker - 1
+          if(HorizontalTracker<0):
+            return False
+
+          for x in range(KingsPiece[0]-1,TestPeice[0]-1,-1):
+            if(self.RevCheck([x,HorizontalTracker])):
               return True
-            counter = counter + 1
+            HorizontalTracker = HorizontalTracker - 1
           return False
 
       # Bishop logic down and to the left
+
+      HorizontalTracker = KingsPiece[1]
       if(KingsPiece[0]<TestPeice[0]):
+        
         if(KingsPiece[1]>TestPeice[1]):
-          counter = 1
-          for x in range(KingsPiece[1]-1,TestPeice[1],-1):
-            if(self.RevCheck([(KingsPiece[0]+counter),x])):
+          HorizontalTracker = HorizontalTracker - 1
+          if(HorizontalTracker <0):
+            return False
+          for x in range(KingsPiece[0]+1,TestPeice[0]+1,1):
+            if(self.RevCheck([x,HorizontalTracker])):
               return True
-            counter = counter + 1
+            HorizontalTracker = HorizontalTracker - 1
           return False
 
+        # down and to the right
+        HorizontalTracker = KingsPiece[1]
         if(KingsPiece[1]<TestPeice[1]):
-          counter = 1
-          for x in range(KingsPiece[1]+1,TestPeice[1],1):
-            if(self.RevCheck([(KingsPiece[0]-counter),x])):
+          HorizontalTracker = HorizontalTracker + 1
+          if(HorizontalTracker>7):
+            return False
+          for x in range(KingsPiece[0]+1,TestPeice[1]+1,1):
+            if(self.RevCheck([x,HorizontalTracker])):
               return True
             return False
 
@@ -2233,7 +2251,10 @@ class Board:
 
      # this return is part of the end, and not part of the pawn test
 
-    return False
+    return False 
+	
+  
+   
 
   def CheckReturnPiece(self, ComparePiece ):
 
