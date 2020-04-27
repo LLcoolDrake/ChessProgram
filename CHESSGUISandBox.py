@@ -6,7 +6,7 @@ from ChessGUI import GUI
 
 class Board:
 	      
-  Board = [["wR","--","wB","wKK","wQ","wB","wK","wR"],["wP","wP","wP","wP","wP","wP","wP","wP"],["--","--","--","--","--","--","--","--"],["--","--","--","--","--","--","--","--"],["--","--","--","--","--","--","--","--"],["--","--","--","--","--","--","--","--"],["wQ","--","--","--","--","--","--","--"],["--","--","bP","bKK","bP","--","--","--"]]  
+  Board = [["wR","wK","wB","wKK","wQ","wB","wK","wR"],["wP","wP","wP","wP","wP","wP","wP","wP"],["--","--","--","--","--","--","--","--"],["--","--","--","--","--","--","--","--"],["--","--","--","--","--","--","--","--"],["--","--","--","--","--","--","--","--"],["bP","bP","bP","bP","bP","bP","bP","bP"],["bR","bK","bB","bKK","bQ","bB","bK","bR"]]
 	 
   BlackKingsPosition = [7,3]
   WhiteKingsPosition = [0,3]
@@ -2553,13 +2553,15 @@ class Board:
                   moves.append([7, startLet,startNum,endLet,endNum])
 
 
-
+    random.shuffle(moves)
     bestMove = moves[0]
 
     for i in range(len(moves)):
       if bestMove[0] < moves[i][0]:
         bestMove = moves[i]
-
+    # if bestMove[0] == 1:
+    #   ran = random.randint(len(moves))
+    #   bestMove = moves[ran]
     print(bestMove)
 
     return bestMove
