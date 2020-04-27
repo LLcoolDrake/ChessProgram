@@ -2956,15 +2956,34 @@ def main():
         Chess.Board[Chess.BlackKingsPosition[0]][Chess.BlackKingsPosition[1]] = "bKK"
         
       if(CheckMate == True):
-        if(BoardPrint%2==0):
+        # if(BoardPrint%2==0):
+        #   print("Check Mate, white you lose")
+        # elif(BoardPrint%2==1):
+        #   print("Check mate black you lose")
+
+        # TO DISPLAY CHECKMATE MESSAGE UNCOMMENT THIS, COMMENT EXISTING break
+        # AND COMMENT OUT THE IF/ELIF above
+        # Will display the message at bottom then allow user to close window and exit program
+
+        if (BoardPrint % 2 == 0):
           print("Check Mate, white you lose")
-        elif(BoardPrint%2==1):
+          CHESSGUI.text_message("Checkmate! Black Wins", 100, 445)
+          exit = None
+          while exit != "exit":
+            exit = CHESSGUI.moveClick()
+          break
+        elif (BoardPrint % 2 == 1):
           print("Check mate black you lose")
+          CHESSGUI.text_message("Checkmate! White Wins", 100, 445)
+          exit = None
+          while exit != "exit":
+            exit = CHESSGUI.moveClick()
+          break
 
         # do you want to play again?
         # add repetative functional play so 
         # RL can play over and over again
-        break
+        # break
      
       try:
 
