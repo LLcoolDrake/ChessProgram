@@ -2052,7 +2052,7 @@ class Board:
     for x in range(KingsPiece[0]+1,8,1):
 
       HorizontalTracker = HorizontalTracker + 1    
-      if(HorizontalTracker > 0):
+      if(HorizontalTracker > 7):
         break
 
       if(self.Board[x][HorizontalTracker]!="--"):
