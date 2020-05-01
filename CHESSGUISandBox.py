@@ -6,7 +6,7 @@ from ChessGUI import GUI
 
 class Board:
 	      
-  Board = [["wR","--","--","wKK","--","--","--","wR"],["wP","wP","wP","wP","wP","wP","wP","wP"],["--","wQ","--","wQ","--","--","--","--"],["wQ","--","--","--","--","--","--","--"],["--","bR","--","--","--","--","bR","--"],["wQ","--","--","--","bP","--","--","--"],["--","--","bP","bKK","bP","wQ","--","--"],["bR","--","bP","bP","bP","--","--","--"]]  
+  Board = [["wR","--","--","wKK","--","--","--","wR"],["wP","wP","wP","wP","wP","wP","wP","wP"],["--","wQ","--","--","--","--","--","--"],["wQ","--","--","--","--","--","--","--"],["--","bR","--","--","--","bR","--","--"],["--","--","--","--","bP","--","--","--"],["--","--","bP","bKK","wK","wQ","--","--"],["bR","wK","bP","bP","bP","--","--","wQ"]]  
 	 
   BlackKingsPosition = [6,3]
   WhiteKingsPosition = [0,3]
@@ -1294,7 +1294,7 @@ class Board:
 
     if(BoardPrint%2==1):
       self.WhiteOppPeicesCausingCheck = []
-      CurrentKing = self.BlackKingsPosition
+      CurrentKing = copy.deepcopy(self.BlackKingsPosition)
       KK = "bKK"
       Q = "bQ"
       R = "bR"
@@ -1304,7 +1304,7 @@ class Board:
     #0print(ColorOfKing[0])
     if(BoardPrint%2==0):
       self.BlackOppPeicesCausingCheck = []
-      CurrentKing = self.WhiteKingsPosition
+      CurrentKing = copy.deepcopy(self.WhiteKingsPosition)
       KK = "wKK"
       Q = "wQ"
       R = "wR"
@@ -1467,7 +1467,7 @@ class Board:
 
 
     # searches for rook or Queen in up position 
-    
+    print("cont skip")
 
     for x in range(KingsPiece[0]-1,0,-1):  
 
@@ -1615,10 +1615,14 @@ class Board:
          # return False 
 
     # handles Bishop down and to the Right
-
+    print("bishop st dr")
     HorizontalTracker = KingsPiece[1]
+    print(KingsPiece[0])
+    print(HorizontalTracker)
     for x in range(KingsPiece[0]+1,8,1):
-      HorizontalTracker = HorizontalTracker + 1
+
+      print("in loop")
+      HorizontalTracker = HorizontalTracker + 1  
       if(HorizontalTracker > 7):
         print("q14.5")
         break
@@ -1648,7 +1652,7 @@ class Board:
           return True
         else:
           break
-        
+
     
 
     # handles Bishot down and to the Left
@@ -1772,9 +1776,15 @@ class Board:
 
     # check for Opposing King
 
+    print("king revCheck")
     # UL
+    
     if(KingsPiece[0]-1>=0 and KingsPiece[1]-1>=0):
-      if(self.Board[KingsPiece[0]-1][KingsPiece[1]-1]==KK):
+      print("king inside")
+      print(self.Board[KingsPiece[0]-1][KingsPiece[1]-1])
+      print(KK)
+      print(CurrentKing)
+      if(self.Board[[KingsPiece[0]-1][KingsPiece[1]-1]=KK):
         print("q21")
         return True
 
@@ -2203,7 +2213,7 @@ class Board:
         
         # TestPiece is switched to the KingsPiece
         
-        if(self.RevCheck(TestPeice)!=True):
+        if(self.Check(TestPeice)!=True):
           
           self.Board[TestPeice[0]][TestPeice[1]] = saveTempPeiceString
           self.Board[KingsPiece[0]][KingsPiece[1]] = saveKingPeiceString
@@ -2216,7 +2226,7 @@ class Board:
             
             self.BlackKingsPosition = KingsPiece
           
-          return False
+          return True
         else:
 
           self.Board[TestPeice[0]][TestPeice[1]] = saveTempPeiceString
