@@ -1784,7 +1784,7 @@ class Board:
       print(self.Board[KingsPiece[0]-1][KingsPiece[1]-1])
       print(KK)
       print(CurrentKing)
-      if(self.Board[[KingsPiece[0]-1][KingsPiece[1]-1]==KK):
+      if(self.Board[KingsPiece[0]-1][KingsPiece[1]-1]==KK):
         print("q21")
         return True
 
