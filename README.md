@@ -1,3 +1,9 @@
+NOTE To  TA: 
+  The Master branch is our finished project. It includes the AI and GUI. It might be dificult for you to test the game
+ and set up test scenarios if the AI is turned on. There is a second branch, Easy-logic-test. It is the same file, except the AI is switched off and the user has control of white and blacks moves. If you would like to set up your own test board, augment the variable, Board = [<chess board positioning>] to your liking and test away. Note if you move the black or white
+ king to a different starting position, update the variable, WhiteKingsPosition =[], or BlackKingsPosition = []. The game updates the kings position and if it's set up to the wrong location, it wont behave like you want it to. These two variables are right below the board variable. The first value in KingsPosition, is the row value, (0 = top row, 7 = bottom row). The second variable is the column. (0 = left column, 7 = right column)   
+
+
 # CS 205 Final Project Group 7: Jacob Drake, Nick Laware, Ethan Bokelberg, Jake Regele  
 For sprint 2, the main() to run is in CHESSGUISandBox.py. It calls the ChessGUI to create a GUI object, and uses that to run the games. Comments about the 
 GUI class are below. 
